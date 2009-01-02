@@ -11,7 +11,7 @@ This driver is licensed under the Apache License, Version 2.
 
 The official code repository is located on GitHub. The repository can be cloned with:
 
-   git clone git://github.com/efarrar/sqlanywhere.git
+   git clone git://github.com/sqlanywhere/sqlanywhere.git
 
 ==Build Instructions
 
