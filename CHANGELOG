@@ -1,0 +1,25 @@
+=CHANGE LOG
+
+=====0.1.3 -- 2008/12/31
+- Removed 'hint file' in lib directory
+- Added extensions to gemspec to force a local compile
+
+=====0.1.2 -- 2008/12/18
+- Fixed bug when trying to read input value from OUTPUT parameter
+- Added error checking to C2RB
+- Fixed Rake to handle .bundle on OSX
+
+=====0.1.1 -- 2008/11/06
+- Created a source gem rake task
+- Created a 'hint' file if the source gem is used directly
+- Changed file permissions on archives
+- Changed archives to be specific to platform (.zip on windows, .tar.gz
+otherwise)
+- Changed default rake task to only build library, not gem
+- Added a gem rake task
+
+=====0.1.0 -- 2008/10/15
+- Initial Release
+- Wraps DBCAPI functionality
+- Includes a simple unit test suite
+
