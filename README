@@ -9,6 +9,10 @@ This driver can be used with SQL Anywhere 11 and SQL Anywhere 10.
 
 This driver is licensed under the Apache License, Version 2.
 
+The official code repository is located on GitHub. The repository can be cloned with:
+
+   git clone git://github.com/efarrar/sqlanywhere.git
+
 ==Build Instructions
 
 ===Requirements
