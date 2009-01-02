@@ -1,0 +1,130 @@
+=SQL Anywhere Ruby Driver
+
+This is a native SQL Anywhere driver for Ruby. This library wraps the 
+functionality provided by the SQL Anywhere DBCAPI library. This driver
+is intended to be a base-level library to be used by interface libraries
+such as Ruby-DBI and ActiveRecord.
+
+This driver can be used with SQL Anywhere 11 and SQL Anywhere 10.
+
+This driver is licensed under the Apache License, Version 2.
+
+==Build Instructions
+
+===Requirements
+* C Compiler
+* Ruby
+* RubyGem Package manager
+
+
+===All Platforms
+
+To build the library (.so), use:
+
+   rake
+
+To build and install the gem, use:
+
+   rake gem
+   rake install
+
+The other rake tasks are 
+
+   rake clean   -> Cleans up all temp files (ex *.~)
+   rake clobber -> Cleans up all built files (ex *.gem, *.o, *.so)
+
+===Additional Install Notes for Windows
+
+The popular One-Click Ruby Installer for Windows (RubyInstaller) is built using 
+Microsoft Visual C++ 6.0. Since problems can arise by combining binaries from
+different compilers, we advise you use this compiler.
+
+If you want to use a more recent version of the MS C++ compiler, you will need to make a few changes:
+
+1. Open the file: <RUBY DIR>\lib\ruby\1.8\i386-mswin32\config.h, and comment out the first three lines so they look like:
+
+    //#if _MSC_VER != 1200
+    //#error MSC version unmatch
+    //#endif
+  
+   This removes the check for C++ Version 6.0
+
+2. Open <tt>rakefile</tt> and set:
+
+      APPLY_MANIFEST = true
+
+   This will add the manifest to the compiled binaries.
+
+By default, rake will attempt to use Microsoft <tt>nmake</tt> when building under Windows. To use another make program, set:
+
+     USE_NMAKE_ON_WIN = FALSE
+
+==Running Unit Tests
+
+1. Change to the the <tt>test</tt> directory
+
+    cd test
+
+2. Create a testing database:
+
+    dbinit test
+
+3. Start the testing database:
+
+    dbeng11 test.db
+ 
+4. Create the test schema:
+
+    dbisql -c "eng=test;uid=dba;pwd=sql" test.sql
+
+5. Run the unit tests:
+
+    ruby sqlanywhere_test.rb
+
+<b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information
+review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
+
+==Sample
+
+This script makes a connection, prints <tt>Successful Ruby Connection</tt> to the SQL
+Anywhere console, then disconnects.
+  
+   # load the SQLAnywhere gem
+   begin
+     require 'rubygems'
+     gem 'sqlanywhere'
+     unless defined? SQLAnywhere
+       require 'sqlanywhere'
+     end    
+   end
+
+   # create an interface
+   api = SQLAnywhere::SQLAnywhereInterface.new()
+
+   # initialize the interface (loads the DLL/SO)
+   SQLAnywhere::API.sqlany_initialize_interface( api )
+
+   # initialize our api object
+   api.sqlany_init()
+
+   # create a connection
+   conn = api.sqlany_new_connection()
+
+   # establish a connection
+   api.sqlany_connect(conn, "uid=dba;pwd=sql")
+
+   # execute a query without a result set
+   api.sqlany_execute_immediate(conn, "MESSAGE 'Successful Ruby Connection'")
+
+   # disconnect from the database
+   api.sqlany_disconnect(conn)
+
+   # free the connection resources
+   api.sqlany_free_connection(conn)
+
+   # free resources the api object uses
+   api.sqlany_fini()
+
+   # close the interface
+   SQLAnywhere::API.sqlany_finalize_interface( api )
+
