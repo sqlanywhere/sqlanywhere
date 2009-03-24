@@ -74,7 +74,6 @@ spec = Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::CURRENT
   spec.required_ruby_version = '>= 1.8.6'
   spec.require_paths = ['lib']
-  spec.extensions << 'ext/extconf.rb'
   spec.test_file  = 'test/sqlanywhere_test.rb'
   spec.rdoc_options << '--title' << 'SQL Anywhere Ruby Driver' <<
                        '--main' << 'README' <<
@@ -101,6 +100,7 @@ file "sqlanywhere-#{pkg_version}-#{spec.platform}.gem" => ["Rakefile",
    spec.files = Dir['ext/**/*'] + Dir['lib/**/*'] + Dir['test/**/*'] + Dir['CHANGELOG'] + Dir['LICENSE'] + Dir['README'] + Dir['Rakefile']
    # Set the gem to be platform specific since it includes compiled binaries   
    spec.platform = Gem::Platform::CURRENT
+   spec.extensions = ''
    Gem::Builder.new(spec).build
 end
 
@@ -117,7 +117,8 @@ file "sqlanywhere-#{pkg_version}.gem" => ["Rakefile",
    # Get the updated list of files to include in the gem
    spec.files = Dir['ext/**/*'] + Dir['lib/**/*'] + Dir['test/**/*'] + Dir['CHANGELOG'] + Dir['LICENSE'] + Dir['README'] + Dir['Rakefile']
    # Since this contains no compilked binaries, set it to be platform RUBY
-   spec.platform = Gem::Platform::RUBY					
+   spec.platform = Gem::Platform::RUBY
+   spec.extensions = 'ext/extconf.rb'					
    Gem::Builder.new(spec).build
 end
 
