@@ -24,7 +24,7 @@
 #include "ruby.h"
 #include "sacapidll.h"
 
-const char* VERSION = "0.1.3";
+const char* VERSION = "0.1.4";
 
 // Defining the Ruby Modules
 static VALUE mSQLAnywhere;

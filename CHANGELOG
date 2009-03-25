@@ -1,5 +1,9 @@
 =CHANGE LOG
 
+=====0.1.4 -- 2009/03/25
+- Changed Rakefile to automatically create lib directory
+- Fixed bug that tried to build native extensions on binary distsributions
+
 =====0.1.3 -- 2008/12/31
 - Removed 'hint file' in lib directory
 - Added extensions to gemspec to force a local compile
