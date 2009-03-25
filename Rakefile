@@ -41,6 +41,8 @@ APPLY_MANIFEST = false
 PACKAGE_NAME = "sqlanywhere"
 ARCH=Config::CONFIG['arch']
 
+Dir.mkdir('lib') unless File.directory?('lib')
+
 pkg_version = ""
 
 library_file = ARCH =~ /darwin/ ? "sqlanywhere.bundle" : "sqlanywhere.so"
