@@ -1,3 +1,8 @@
+// *****************************************************
+// Copyright (c) 2008-2010 iAnywhere Solutions, Inc.
+// Portions copyright (c) 1988-2010 Sybase, Inc.
+// All rights reserved. All unpublished rights reserved.
+// *****************************************************
 IF EXISTS( SELECT * FROM "SYS"."SYSTAB" WHERE "table_name" = 'test') THEN
   DROP TABLE "test";
 END IF;

@@ -1,5 +1,9 @@
 =CHANGE LOG
 
+=====0.1.5 -- 2010/01/25
+- Updated library to use DBCAPI 2.0
+- Changed test suite to correctly test BIT and TINYINT types
+
 =====0.1.4 -- 2009/03/25
 - Changed Rakefile to automatically create lib directory
 - Fixed bug that tried to build native extensions on binary distsributions

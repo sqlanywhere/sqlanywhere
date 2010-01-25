@@ -1,6 +1,6 @@
 //====================================================
 //
-//      Copyright 2008-2009 iAnywhere Solutions, Inc.
+//      Copyright 2008-2010 iAnywhere Solutions, Inc.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -82,6 +82,9 @@ void * findSymbol( void * dll_handle, char * name )
 #endif
 }
 
+#define LookupSymbol( api, sym )					\
+	api->sym = (sym ## _func)findSymbol( api->dll_handle, #sym );
+
 #define LookupSymbolAndCheck( api, sym )				\
 	api->sym = (sym ## _func)findSymbol( api->dll_handle, #sym );	\
 	if( api->sym == NULL ) {					\
@@ -149,6 +152,18 @@ loaded:
     LookupSymbolAndCheck( api, sqlany_error );
     LookupSymbolAndCheck( api, sqlany_sqlstate );
     LookupSymbolAndCheck( api, sqlany_clear_error );
+
+#if _SACAPI_VERSION+0 >= 2
+    /* We don't report an error if we don't find the v2 entry points.
+       That allows the calling app to revert to v1 */
+    LookupSymbol( api, sqlany_init_ex );
+    LookupSymbol( api, sqlany_fini_ex );
+    LookupSymbol( api, sqlany_new_connection_ex );
+    LookupSymbol( api, sqlany_make_connection_ex );
+    LookupSymbol( api, sqlany_client_version_ex );
+    LookupSymbolAndCheck( api, sqlany_cancel );
+#endif
+
     api->initialized = 1;
     return 1;
 }

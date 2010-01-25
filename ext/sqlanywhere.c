@@ -1,6 +1,6 @@
 /*====================================================
 *
-*   Copyright 2008-2009 iAnywhere Solutions, Inc.
+*   Copyright 2008-2010 iAnywhere Solutions, Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,9 +22,19 @@
 *
 *====================================================*/
 #include "ruby.h"
+
+#define _SACAPI_VERSION 2
+
 #include "sacapidll.h"
 
-const char* VERSION = "0.1.4";
+#define IS_SACAPI_V2(api) ((api.sqlany_init_ex) != NULL)
+
+const char* VERSION = "0.1.5";
+
+typedef struct imp_drh_st {
+  SQLAnywhereInterface  api;
+  void                *sacapi_context;
+} imp_drh_st;
 
 // Defining the Ruby Modules
 static VALUE mSQLAnywhere;
@@ -45,10 +55,10 @@ void Init_sqlanywhere();
 // Wrapper functions for the DBICAPI functions
 
 static VALUE
-static_API_sqlany_initialize_interface(VALUE module, VALUE api);
+static_API_sqlany_initialize_interface(VALUE module, VALUE imp_drh);
 
 static VALUE
-static_API_sqlany_finalize_interface(VALUE module, VALUE api);
+static_API_sqlany_finalize_interface(VALUE module, VALUE imp_drh);
 
 static VALUE
 static_SQLAnywhereInterface_alloc(VALUE class);
@@ -60,64 +70,67 @@ static VALUE
 static_SQLAnywhereInterface_sqlany_new_connection(VALUE class);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_client_version(VALUE api);
+static_SQLAnywhereInterface_sqlany_client_version(VALUE imp_drh);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_connect(VALUE api, VALUE sqlany_conn, VALUE str);
+static_SQLAnywhereInterface_sqlany_connect(VALUE imp_drh, VALUE sqlany_conn, VALUE str);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_disconnect(VALUE api, VALUE sqlany_conn);
+static_SQLAnywhereInterface_sqlany_disconnect(VALUE imp_drh, VALUE sqlany_conn);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_free_connection(VALUE api, VALUE sqlany_conn);
+static_SQLAnywhereInterface_sqlany_free_connection(VALUE imp_drh, VALUE sqlany_conn);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_fini(VALUE api);
+static_SQLAnywhereInterface_sqlany_fini(VALUE imp_drh);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_error(VALUE api, VALUE sqlany_conn);
+static_SQLAnywhereInterface_sqlany_error(VALUE imp_drh, VALUE sqlany_conn);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE api, VALUE sqlany_conn, VALUE sql);
+static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE imp_drh, VALUE sqlany_conn, VALUE sql);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute_direct(VALUE api, VALUE sqlany_conn, VALUE sql);
+static_SQLAnywhereInterface_sqlany_execute_direct(VALUE imp_drh, VALUE sqlany_conn, VALUE sql);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_num_cols(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_num_cols(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_num_rows(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_num_rows(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALUE col_num);
+static_SQLAnywhereInterface_sqlany_get_column(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_fetch_next(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_fetch_next(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_column_info(VALUE api, VALUE sqlany_stmt, VALUE col_num);
+static_SQLAnywhereInterface_sqlany_get_column_info(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_commit(VALUE api, VALUE sqlany_conn);
+static_SQLAnywhereInterface_sqlany_commit(VALUE imp_drh, VALUE sqlany_conn);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_rollback(VALUE api, VALUE sqlany_conn);
+static_SQLAnywhereInterface_sqlany_rollback(VALUE imp_drh, VALUE sqlany_conn);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE sql);
+static_SQLAnywhereInterface_sqlany_prepare(VALUE imp_drh, VALUE sqlany_conn, VALUE sql);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_free_stmt(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_free_stmt(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_reset(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_affected_rows(VALUE api, VALUE sqlany_stmt);
+static_SQLAnywhereInterface_sqlany_execute(VALUE imp_drh, VALUE sqlany_stmt);
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE api, VALUE sqlany_stmt, VALUE index);
+static_SQLAnywhereInterface_sqlany_affected_rows(VALUE imp_drh, VALUE sqlany_stmt);
+
+static VALUE
+static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE imp_drh, VALUE sqlany_stmt, VALUE index);
 
 /* 
  * C to Ruby Data conversion function to convert DBCAPI column type into the correct Ruby type
@@ -179,7 +192,7 @@ static VALUE C2RB(a_sqlany_data_value* value)
 
 /*
  * call-seq:
- *    sqlany_initialize_interface(VALUE api) -> int result
+ *    sqlany_initialize_interface(VALUE imp_drh) -> int result
  *
  *  Initializes the SQLAnywhereInterface object and loads the DLL dynamically.
  *
@@ -187,28 +200,28 @@ static VALUE C2RB(a_sqlany_data_value* value)
  *  looks up all the entry points of the DLL. 
  *
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An API structure to initialize.
+ *  - <tt>VALUE imp_drh</tt> -- An API structure to initialize.
  *
  *  <b>Returns</b>:
  *  - <tt>result</tt>: <tt>1</tt> on successful initialization, <tt>0</tt> on failure.
  *   
  */
 static VALUE
-static_API_sqlany_initialize_interface(VALUE module, VALUE api)
+static_API_sqlany_initialize_interface(VALUE module, VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     int result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     
-    result = sqlany_initialize_interface( s_api, NULL );
+    result = sqlany_initialize_interface( &(s_imp_drh->api), NULL );
 
     return( INT2NUM(result) ); 
 }
 
 /*
  * call-seq:
- *    sqlany_finalize_interface(VALUE api) -> nil
+ *    sqlany_finalize_interface(VALUE imp_drh) -> nil
  *
  *  Finalize and free resources associated with the SQL Anywhere C API DLL.
  *
@@ -216,22 +229,22 @@ static_API_sqlany_initialize_interface(VALUE module, VALUE api)
  *  SQLAnywhereInterface structure. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *
  *  <b>Returns</b>:
  *  - <tt>nil</tt>.
  *   
  */
 static VALUE
-static_API_sqlany_finalize_interface(VALUE module, VALUE api)
+static_API_sqlany_finalize_interface(VALUE module, VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
 
-    sqlany_finalize_interface(s_api);
+    sqlany_finalize_interface(&(s_imp_drh->api));
 
-    free(s_api);
+    free(&(s_imp_drh->api));
 
     return( Qnil );
 }
@@ -239,24 +252,24 @@ static_API_sqlany_finalize_interface(VALUE module, VALUE api)
 static VALUE
 static_SQLAnywhereInterface_alloc(VALUE class)
 { 
-  SQLAnywhereInterface *s_api = NULL;
+  imp_drh_st *imp_drh = NULL;
   VALUE 	        tdata;
 
-  s_api = malloc( sizeof(SQLAnywhereInterface) );
-  memset( s_api, 0, sizeof(SQLAnywhereInterface));
+  imp_drh = malloc( sizeof(imp_drh_st) );
+  memset( imp_drh, 0, sizeof(imp_drh_st));
 
-  tdata = Data_Wrap_Struct(class, 0, 0, s_api);
+  tdata = Data_Wrap_Struct(class, 0, 0, imp_drh);
   return tdata;
 }
 
 /*
  * call-seq:
- *   sqlany_init(VALUE api) -> [VALUE result, VALUE version] 
+ *   sqlany_init(VALUE imp_drh) -> [VALUE result, VALUE version] 
  *
  *  Initializes the interface.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *
  *  <b>Returns</b>:
  *  - <tt>VALUE result</tt>: <tt>1</tt> on success, <tt>0</tt> on failure.
@@ -264,24 +277,36 @@ static_SQLAnywhereInterface_alloc(VALUE class)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_init(VALUE api)
+static_SQLAnywhereInterface_sqlany_init(VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     sacapi_bool result;
     sacapi_u32 s_version_available;   
     VALUE multi_result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
 
     multi_result = rb_ary_new();
 
-    if( s_api == NULL ) {
+    if( &(s_imp_drh->api) == NULL ) {
 	rb_ary_push(multi_result, INT2NUM(0));
 	rb_ary_push(multi_result, Qnil );
     } else {
-	result = s_api->sqlany_init("RUBY", SQLANY_CURRENT_API_VERSION , &s_version_available );
+      if (IS_SACAPI_V2(s_imp_drh->api)) {
+        s_imp_drh->sacapi_context = s_imp_drh->api.sqlany_init_ex("RUBY", SQLANY_API_VERSION_2 , &s_version_available );
+        if ( s_imp_drh->sacapi_context == NULL ) {
+          rb_ary_push(multi_result, INT2NUM(0));
+        }
+        else {
+          rb_ary_push(multi_result, INT2NUM(1));
+        }
+	rb_ary_push(multi_result, INT2NUM(s_version_available));
+      }
+      else {
+        result = s_imp_drh->api.sqlany_init("RUBY", SQLANY_API_VERSION_1 , &s_version_available );
 	rb_ary_push(multi_result, INT2NUM(result));
 	rb_ary_push(multi_result, INT2NUM(s_version_available));
+      }
     }
 
     return( multi_result ); 
@@ -289,7 +314,7 @@ static_SQLAnywhereInterface_sqlany_init(VALUE api)
 
 /*
  * call-seq:
- *   sqlany_new_connection(VALUE api) -> VALUE connection
+ *   sqlany_new_connection(VALUE imp_drh) -> VALUE connection
  *
  *  Creates a connection object.
  *
@@ -298,21 +323,21 @@ static_SQLAnywhereInterface_sqlany_init(VALUE api)
  *  one request can be processed on a connection at a time. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *
  *  <b>Returns</b>:
  *  - <tt>VALUE connection</tt>: A connection object.
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_new_connection(VALUE api)
+static_SQLAnywhereInterface_sqlany_new_connection(VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* ptr;
     VALUE tdata;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
-    ptr = s_api->sqlany_new_connection();
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
+    ptr = s_imp_drh->api.sqlany_new_connection();
 
     tdata = Data_Wrap_Struct(cA_sqlany_connection, 0, 0, ptr);
     
@@ -321,14 +346,14 @@ static_SQLAnywhereInterface_sqlany_new_connection(VALUE api)
 
 /*
  * call-seq:
- *   sqlany_client_version(VALUE api) -> [VALUE verstr]
+ *   sqlany_client_version(VALUE imp_drh) -> [VALUE verstr]
  * 
  *  Retrieves the client version as a string.
  *
  *  This function can be used to retrieve the client version. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> --  an initialized API structure to finalize
+ *  - <tt>VALUE imp_drh</tt> --  an initialized API structure to finalize
  *
  *  <b>Returns</b>:
  *  - <tt>VALUE verstr</tt>: The client version string.  
@@ -336,22 +361,22 @@ static_SQLAnywhereInterface_sqlany_new_connection(VALUE api)
  */
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_client_version(VALUE api)
+static_SQLAnywhereInterface_sqlany_client_version(VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     size_t s_size; 
     char s_buffer[255];
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
 
-    s_api->sqlany_client_version(s_buffer, 255);
+    s_imp_drh->api.sqlany_client_version(s_buffer, 255);
 
     return (rb_str_new2(s_buffer));
 }
 
 /*
  * call-seq:
- *   sqlany_connect(VALUE api, VALUE sqlany_conn, VALUE str) -> VALUE result
+ *   sqlany_connect(VALUE imp_drh, VALUE sqlany_conn, VALUE str) -> VALUE result
  *
  *  Creates a connection object.
  *
@@ -360,7 +385,7 @@ static_SQLAnywhereInterface_sqlany_client_version(VALUE api)
  *  one request can be processed on a connection at a time.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was created by sqlany_new_connection().
  *  - <tt>VALUE str</tt> -- A SQL Anywhere connection string.
  *
@@ -369,26 +394,26 @@ static_SQLAnywhereInterface_sqlany_client_version(VALUE api)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_connect(VALUE api, VALUE sqlany_conn, VALUE str)
+static_SQLAnywhereInterface_sqlany_connect(VALUE imp_drh, VALUE sqlany_conn, VALUE str)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     char* s_str;
     sacapi_bool   result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
     s_str = StringValueCStr( str );
 
-    result = s_api->sqlany_connect( s_sqlany_conn, s_str );
+    result = s_imp_drh->api.sqlany_connect( s_sqlany_conn, s_str );
 
     return( INT2NUM(result) ); 
 }
 
 /*
  * call-seq:
- *   sqlany_disconnect(VALUE api, VALUE sqlany_conn) -> nil
+ *   sqlany_disconnect(VALUE imp_drh, VALUE sqlany_conn) -> nil
  *
  *  Disconnect an already established connection.
  *
@@ -396,7 +421,7 @@ static_SQLAnywhereInterface_sqlany_connect(VALUE api, VALUE sqlany_conn, VALUE s
  *  uncommitted transactions will be rolled back.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -404,28 +429,28 @@ static_SQLAnywhereInterface_sqlany_connect(VALUE api, VALUE sqlany_conn, VALUE s
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_disconnect(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_disconnect(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
 
-    s_api->sqlany_disconnect( s_sqlany_conn );
+    s_imp_drh->api.sqlany_disconnect( s_sqlany_conn );
 
     return( Qnil ); 
 }
 
 /*
  * call-seq:
- *   sqlany_free_connection(VALUE api, VALUE sqlany_conn) -> nil
+ *   sqlany_free_connection(VALUE imp_drh, VALUE sqlany_conn) -> nil
  *
  *  Frees the resources associated with a connection object.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was disconnected by sqlany_disconnect().
  *
  *  <b>Returns</b>:
@@ -433,50 +458,56 @@ static_SQLAnywhereInterface_sqlany_disconnect(VALUE api, VALUE sqlany_conn)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_free_connection(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_free_connection(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
 
-    s_api->sqlany_free_connection( s_sqlany_conn );
+    s_imp_drh->api.sqlany_free_connection( s_sqlany_conn );
 
     return( Qnil ); 
 }
 
 /*
  * call-seq:
- *   sqlany_fini(VALUE api) -> nil
+ *   sqlany_fini(VALUE imp_drh) -> nil
  * 	
  *  Finalizes the interface.
  *
  *  Thus function frees any resources allocated by the API.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *
  *  <b>Returns</b>:
  *  - <tt>nil</tt>.
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_fini(VALUE api)
+static_SQLAnywhereInterface_sqlany_fini(VALUE imp_drh)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
 
-    s_api->sqlany_fini();
+    if( IS_SACAPI_V2(s_imp_drh->api) ) {
+      s_imp_drh->api.sqlany_fini_ex(s_imp_drh->sacapi_context);
+      s_imp_drh->sacapi_context = NULL;
+    }
+    else {
+      s_imp_drh->api.sqlany_fini();
+    }
 
     return( Qnil ); 
 }
 
 /*
  * call-seq:
- *   sqlany_error(VALUE api, VALUE sqlany_conn) -> [VALUE result, VALUE errstr]
+ *   sqlany_error(VALUE imp_drh, VALUE sqlany_conn) -> [VALUE result, VALUE errstr]
  * 
  *  Retrieves the last error code and message.
  *
@@ -484,7 +515,7 @@ static_SQLAnywhereInterface_sqlany_fini(VALUE api)
  *  stored in the connection object. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -494,19 +525,19 @@ static_SQLAnywhereInterface_sqlany_fini(VALUE api)
  */
 
 static VALUE
-static_SQLAnywhereInterface_sqlany_error(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_error(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     size_t s_size; 
     char s_buffer[255];
     sacapi_i32 result;
     VALUE multi_result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    result = s_api->sqlany_error(s_sqlany_conn, s_buffer, 255);
+    result = s_imp_drh->api.sqlany_error(s_sqlany_conn, s_buffer, 255);
 
     multi_result = rb_ary_new();
 
@@ -518,7 +549,7 @@ static_SQLAnywhereInterface_sqlany_error(VALUE api, VALUE sqlany_conn)
 
 /*
  * call-seq:
- *   sqlany_execute_immediate(VALUE api, VALUE sqlany_conn, VALUE sql) -> VALUE result
+ *   sqlany_execute_immediate(VALUE imp_drh, VALUE sqlany_conn, VALUE sql) -> VALUE result
  * 
  *  Executes a SQL statement immediately without returning a result set.
  *
@@ -527,7 +558,7 @@ static_SQLAnywhereInterface_sqlany_error(VALUE api, VALUE sqlany_conn)
  * 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *  - <tt>VALUE sql</tt> -- A SQL query string.
  *
@@ -536,26 +567,26 @@ static_SQLAnywhereInterface_sqlany_error(VALUE api, VALUE sqlany_conn)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE api, VALUE sqlany_conn, VALUE sql)
+static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE imp_drh, VALUE sqlany_conn, VALUE sql)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     char* s_sql;
     sacapi_bool result;
 
     s_sql = StringValueCStr( sql );
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    result = s_api->sqlany_execute_immediate(s_sqlany_conn, s_sql);
+    result = s_imp_drh->api.sqlany_execute_immediate(s_sqlany_conn, s_sql);
 
     return( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_execute_direct(VALUE api, VALUE sqlany_conn, VALUE sql) -> VALUE resultset
+ *   sqlany_execute_direct(VALUE imp_drh, VALUE sqlany_conn, VALUE sql) -> VALUE resultset
  * 
  *  Executes a SQL statement and possibly returns a result set.
  *
@@ -568,7 +599,7 @@ static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE api, VALUE sqlany_con
  *  parameters.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *  - <tt>VALUE sql</tt> -- A SQL query string.
  *
@@ -577,9 +608,9 @@ static_SQLAnywhereInterface_sqlany_execute_immediate(VALUE api, VALUE sqlany_con
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute_direct(VALUE api, VALUE sqlany_conn, VALUE sql)
+static_SQLAnywhereInterface_sqlany_execute_direct(VALUE imp_drh, VALUE sqlany_conn, VALUE sql)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     a_sqlany_stmt* resultset = NULL;
     char* s_sql;
@@ -587,10 +618,10 @@ static_SQLAnywhereInterface_sqlany_execute_direct(VALUE api, VALUE sqlany_conn, 
 
     s_sql = StringValueCStr( sql );
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    resultset = s_api->sqlany_execute_direct(s_sqlany_conn, s_sql);
+    resultset = s_imp_drh->api.sqlany_execute_direct(s_sqlany_conn, s_sql);
    
     if (resultset)
     {
@@ -606,12 +637,12 @@ static_SQLAnywhereInterface_sqlany_execute_direct(VALUE api, VALUE sqlany_conn, 
 
 /*
  * call-seq:
- *   sqlany_num_cols(VALUE api, VALUE sqlany_stmt) -> VALUE num_cols
+ *   sqlany_num_cols(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE num_cols
  * 
  *  Returns number of columns in the result set.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -619,23 +650,23 @@ static_SQLAnywhereInterface_sqlany_execute_direct(VALUE api, VALUE sqlany_conn, 
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_num_cols(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_num_cols(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_stmt;
     sacapi_i32 result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_stmt);
 
-    result = s_api->sqlany_num_cols(s_stmt);
+    result = s_imp_drh->api.sqlany_num_cols(s_stmt);
 
     return( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_num_rows(VALUE api, VALUE sqlany_stmt) -> VALUE num_rows
+ *   sqlany_num_rows(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE num_rows
  * 
  *  Returns number of rows in the result set.
  *
@@ -644,7 +675,7 @@ static_SQLAnywhereInterface_sqlany_num_cols(VALUE api, VALUE sqlany_stmt)
  *  Refer to SQL Anywhere documentation for the SQL syntax to set this option.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> --  An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> --  An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -652,28 +683,28 @@ static_SQLAnywhereInterface_sqlany_num_cols(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_num_rows(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_num_rows(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_stmt;
     sacapi_i32 result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_stmt);
 
-    result = s_api->sqlany_num_rows(s_stmt);
+    result = s_imp_drh->api.sqlany_num_rows(s_stmt);
 
     return( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALUE col_num) -> [VALUE result, VALUE column_value]
+ *   sqlany_get_column(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num) -> [VALUE result, VALUE column_value]
  * 
  *  Retrieves the data fetched for the specified column.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *  - <tt>VALUE col_num</tt> -- The number of the column to be retrieved. A column number is between 0 and sqlany_num_cols() - 1.
  *
@@ -682,20 +713,20 @@ static_SQLAnywhereInterface_sqlany_num_rows(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALUE col_num)
+static_SQLAnywhereInterface_sqlany_get_column(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_stmt;
     sacapi_u32 s_col_num;
     a_sqlany_data_value value;
     sacapi_bool result;
     VALUE multi_result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_stmt);
     s_col_num = NUM2INT(col_num);
 
-    result = s_api->sqlany_get_column(s_stmt, s_col_num, &value );
+    result = s_imp_drh->api.sqlany_get_column(s_stmt, s_col_num, &value );
 
     multi_result = rb_ary_new();
     rb_ary_push(multi_result, INT2NUM(result));
@@ -720,7 +751,7 @@ static_SQLAnywhereInterface_sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALU
 
 /*
  * call-seq:
- *   sqlany_fetch_next(VALUE api, VALUE sqlany_stmt) -> VALUE result
+ *   sqlany_fetch_next(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
  * 
  *  Fetches the next row from the result set.
  * 
@@ -731,7 +762,7 @@ static_SQLAnywhereInterface_sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALU
  *  at the new row. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -739,23 +770,23 @@ static_SQLAnywhereInterface_sqlany_get_column(VALUE api, VALUE sqlany_stmt, VALU
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_fetch_next(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_fetch_next(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_stmt;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_stmt);
 
-    result = s_api->sqlany_fetch_next(s_stmt);
+    result = s_imp_drh->api.sqlany_fetch_next(s_stmt);
 
     return( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_get_column_info(VALUE api, VALUE sqlany_stmt, VALUE col_num) -> [VALUE result, VALUE col_num, VALUE name, VALUE type, VALUE max_size]
+ *   sqlany_get_column_info(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num) -> [VALUE result, VALUE col_num, VALUE name, VALUE type, VALUE max_size]
  * 
  *  Fetches the next row from the result set.
  * 
@@ -766,7 +797,7 @@ static_SQLAnywhereInterface_sqlany_fetch_next(VALUE api, VALUE sqlany_stmt)
  *  at the new row. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *  - <tt>VALUE col_num</tt> -- The number of the column to be retrieved. A column number is between 0 and sqlany_num_cols() - 1.
  *
@@ -783,20 +814,20 @@ static_SQLAnywhereInterface_sqlany_fetch_next(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_column_info(VALUE api, VALUE sqlany_stmt, VALUE col_num)
+static_SQLAnywhereInterface_sqlany_get_column_info(VALUE imp_drh, VALUE sqlany_stmt, VALUE col_num)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_stmt;
     sacapi_u32 s_col_num;
     a_sqlany_column_info info;
     sacapi_bool result;
     VALUE multi_result;    
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_stmt);
     s_col_num = NUM2INT(col_num);
 
-    result = s_api->sqlany_get_column_info(s_stmt, s_col_num, &info );
+    result = s_imp_drh->api.sqlany_get_column_info(s_stmt, s_col_num, &info );
 
     multi_result = rb_ary_new();
     rb_ary_push(multi_result, INT2NUM(result));
@@ -814,12 +845,12 @@ static_SQLAnywhereInterface_sqlany_get_column_info(VALUE api, VALUE sqlany_stmt,
 
 /*
  * call-seq:
- *   sqlany_commit(VALUE api, VALUE sqlany_conn) -> VALUE result
+ *   sqlany_commit(VALUE imp_drh, VALUE sqlany_conn) -> VALUE result
  * 
  *  Commits the current transaction.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -827,16 +858,16 @@ static_SQLAnywhereInterface_sqlany_get_column_info(VALUE api, VALUE sqlany_stmt,
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_commit(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_commit(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    result = s_api->sqlany_commit(s_sqlany_conn);
+    result = s_imp_drh->api.sqlany_commit(s_sqlany_conn);
 
     return( INT2NUM(result) );
 }
@@ -844,12 +875,12 @@ static_SQLAnywhereInterface_sqlany_commit(VALUE api, VALUE sqlany_conn)
 
 /*
  * call-seq:
- *   sqlany_rollback(VALUE api, VALUE sqlany_conn) -> VALUE result
+ *   sqlany_rollback(VALUE imp_drh, VALUE sqlany_conn) -> VALUE result
  * 
  *  Rolls back the current transaction.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -857,23 +888,23 @@ static_SQLAnywhereInterface_sqlany_commit(VALUE api, VALUE sqlany_conn)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_rollback(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_rollback(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    result = s_api->sqlany_rollback(s_sqlany_conn);
+    result = s_imp_drh->api.sqlany_rollback(s_sqlany_conn);
 
     return( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE sql) -> VALUE stmt
+ *   sqlany_prepare(VALUE imp_drh, VALUE sqlany_conn, VALUE sql) -> VALUE stmt
  * 
  *  Prepares a SQL statement.
  *
@@ -883,7 +914,7 @@ static_SQLAnywhereInterface_sqlany_rollback(VALUE api, VALUE sqlany_conn)
  *  
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *  - <tt>VALUE sql</tt> -- SQL query to prepare.
  *
@@ -892,9 +923,9 @@ static_SQLAnywhereInterface_sqlany_rollback(VALUE api, VALUE sqlany_conn)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE sql)
+static_SQLAnywhereInterface_sqlany_prepare(VALUE imp_drh, VALUE sqlany_conn, VALUE sql)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     a_sqlany_stmt* ptr = NULL;
     char* s_sql;
@@ -903,10 +934,10 @@ static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE s
 
     s_sql = StringValueCStr( sql );
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    ptr = s_api->sqlany_prepare(s_sqlany_conn, s_sql);
+    ptr = s_imp_drh->api.sqlany_prepare(s_sqlany_conn, s_sql);
 
     if (ptr)
     {
@@ -922,7 +953,7 @@ static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE s
 
 /*
  * call-seq:
- *   sqlany_free_stmt(VALUE api, VALUE sqlany_stmt) -> nil
+ *   sqlany_free_stmt(VALUE imp_drh, VALUE sqlany_stmt) -> nil
  * 
  *  Frees resources associated with a prepared statement object.
  *
@@ -930,7 +961,7 @@ static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE s
  *  object.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -938,22 +969,22 @@ static_SQLAnywhereInterface_sqlany_prepare(VALUE api, VALUE sqlany_conn, VALUE s
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_free_stmt(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_free_stmt(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     int i;
     int number_of_params = 0;
     a_sqlany_bind_param_info bind_info;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
 
-    number_of_params = s_api->sqlany_num_params(s_sqlany_stmt);
+    number_of_params = s_imp_drh->api.sqlany_num_params(s_sqlany_stmt);
 
     for (i = 0; i < number_of_params; i++)
     {
-       if( s_api->sqlany_get_bind_param_info(s_sqlany_stmt, i, &bind_info) ) 
+       if( s_imp_drh->api.sqlany_get_bind_param_info(s_sqlany_stmt, i, &bind_info) ) 
        {
 	  // We don't free bind_info.name as it's not allocated
 	  // if (bind_info.name) {free (bind_info.name);}
@@ -968,19 +999,18 @@ static_SQLAnywhereInterface_sqlany_free_stmt(VALUE api, VALUE sqlany_stmt)
        }
     }
     
-    s_api->sqlany_free_stmt(s_sqlany_stmt);
+    s_imp_drh->api.sqlany_free_stmt(s_sqlany_stmt);
     
     return ( Qnil );
 }
 
 /*
  * call-seq:
- *   sqlany_execute(VALUE api, VALUE sqlany_stmt) -> VALUE result
+ *   sqlany_reset(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
  * 
- *  Executes a prepared statement.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -988,29 +1018,59 @@ static_SQLAnywhereInterface_sqlany_free_stmt(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_execute(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_reset(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
 
-    result = s_api->sqlany_execute(s_sqlany_stmt);
+    result = s_imp_drh->api.sqlany_reset(s_sqlany_stmt);
+
+    return (INT2NUM(result));
+}
+
+
+/*
+ * call-seq:
+ *   sqlany_execute(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
+ * 
+ *  Executes a prepared statement.
+ *  
+ *  <b>Parameters</b>:
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was created by sqlany_prepare() or sqlany_execute_direct().
+ *
+ *  <b>Returns</b>:
+ *  - <tt>VALUE result</tt>: <tt>1</tt> on successful execution, <tt>0</tt> otherwise.
+ *   
+ */
+static VALUE
+static_SQLAnywhereInterface_sqlany_execute(VALUE imp_drh, VALUE sqlany_stmt)
+{
+    imp_drh_st* s_imp_drh;
+    a_sqlany_stmt* s_sqlany_stmt;
+    sacapi_bool result;
+
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
+    Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
+
+    result = s_imp_drh->api.sqlany_execute(s_sqlany_stmt);
 
     return (INT2NUM(result));
 }
 
 /*
  * call-seq:
- *   sqlany_affected_rows(VALUE api, VALUE sqlany_stmt) -> VALUE result
+ *   sqlany_affected_rows(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
  * 
  *  Returns the number of rows affected by execution of the prepared
  *  statement.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement that was prepared and executed successfully with no result set returned.
  *
  *  <b>Returns</b>:
@@ -1018,23 +1078,23 @@ static_SQLAnywhereInterface_sqlany_execute(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_affected_rows(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_affected_rows(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     sacapi_i32 result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
 
-    result = s_api->sqlany_affected_rows(s_sqlany_stmt);
+    result = s_imp_drh->api.sqlany_affected_rows(s_sqlany_stmt);
     
     return ( INT2NUM(result) );
 }
 
 /*
  * call-seq:
- *   sqlany_describe_bind_param(VALUE api, VALUE sqlany_stmt, VALUE index) -> [VALUE result, VALUE bind_param]
+ *   sqlany_describe_bind_param(VALUE imp_drh, VALUE sqlany_stmt, VALUE index) -> [VALUE result, VALUE bind_param]
  * 
  *  Describes the bind parameters of a prepared statement.
  *
@@ -1045,7 +1105,7 @@ static_SQLAnywhereInterface_sqlany_affected_rows(VALUE api, VALUE sqlany_stmt)
  *  of the parameters (input, output, or input-output). 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was returned from sqlany_prepare().
  *  - <tt>VALUE index</tt> -- The index of the parameter. This should be a number between 0 and sqlany_num_params()-  1.
  *
@@ -1055,9 +1115,9 @@ static_SQLAnywhereInterface_sqlany_affected_rows(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE api, VALUE sqlany_stmt, VALUE index)
+static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE imp_drh, VALUE sqlany_stmt, VALUE index)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     a_sqlany_bind_param* s_sqlany_bind_param;
     sacapi_bool result;
@@ -1068,11 +1128,11 @@ static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE api, VALUE sqlany_s
     s_sqlany_bind_param = malloc(sizeof(a_sqlany_bind_param));
     memset( s_sqlany_bind_param, 0, sizeof(a_sqlany_bind_param) );
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
     s_index = NUM2INT(index);  
 
-    result = s_api->sqlany_describe_bind_param(s_sqlany_stmt, s_index, s_sqlany_bind_param);
+    result = s_imp_drh->api.sqlany_describe_bind_param(s_sqlany_stmt, s_index, s_sqlany_bind_param);
 
     //FIXME handle failed result
 
@@ -1088,12 +1148,12 @@ static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE api, VALUE sqlany_s
 
 /*
  * call-seq:
- *   sqlany_bind_param(VALUE api, VALUE sqlany_stmt, VALUE index, VALUE sqlany_bind_param) -> VALUE result
+ *   sqlany_bind_param(VALUE imp_drh, VALUE sqlany_stmt, VALUE index, VALUE sqlany_bind_param) -> VALUE result
  * 
  *  Binds a user supplied buffer as a parameter to the prepared statement.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was returned from sqlany_prepare().
  *  - <tt>VALUE index</tt> -- The index of the parameter. This should be a number between 0 and sqlany_num_params() - 1.
  *  - <tt>VALUE sqlany_bind_param</tt> -- A filled bind object retrieved from sqlany_describe_bind_param().
@@ -1103,27 +1163,27 @@ static_SQLAnywhereInterface_sqlany_describe_bind_param(VALUE api, VALUE sqlany_s
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_bind_param(VALUE api, VALUE sqlany_stmt, VALUE index, VALUE sqlany_bind_param )
+static_SQLAnywhereInterface_sqlany_bind_param(VALUE imp_drh, VALUE sqlany_stmt, VALUE index, VALUE sqlany_bind_param )
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     a_sqlany_bind_param* s_sqlany_bind_param;
     sacapi_bool result;
     sacapi_u32 s_index;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
     Data_Get_Struct(sqlany_bind_param, a_sqlany_bind_param, s_sqlany_bind_param);    
     s_index = NUM2INT(index);  
 
-    result = s_api->sqlany_bind_param(s_sqlany_stmt, s_index, s_sqlany_bind_param);
+    result = s_imp_drh->api.sqlany_bind_param(s_sqlany_stmt, s_index, s_sqlany_bind_param);
     
     return( INT2NUM(result) );    
 }
 
 /*
  * call-seq:
- *   sqlany_get_bind_param_info(VALUE api, VALUE sqlany_stmt, VALUE index) -> [VALUE result, VALUE bind_param]
+ *   sqlany_get_bind_param_info(VALUE imp_drh, VALUE sqlany_stmt, VALUE index) -> [VALUE result, VALUE bind_param]
  * 
  *  Gets bound parameter info.
  *
@@ -1131,7 +1191,7 @@ static_SQLAnywhereInterface_sqlany_bind_param(VALUE api, VALUE sqlany_stmt, VALU
  *  bound using sqlany_bind_param(). 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was returned from sqlany_prepare().
  *  - <tt>VALUE index</tt> -- The index of the parameter. This should be a number between 0 and sqlany_num_params() - 1.
  *
@@ -1141,9 +1201,9 @@ static_SQLAnywhereInterface_sqlany_bind_param(VALUE api, VALUE sqlany_stmt, VALU
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE api, VALUE sqlany_stmt, VALUE index)
+static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE imp_drh, VALUE sqlany_stmt, VALUE index)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     a_sqlany_bind_param_info s_sqlany_bind_param_info;
     sacapi_bool result;
@@ -1151,11 +1211,11 @@ static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE api, VALUE sqlany_s
     VALUE tdata;
     VALUE multi_result;  
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
     s_index = NUM2INT(index);  
 
-    result = s_api->sqlany_get_bind_param_info(s_sqlany_stmt, s_index, &s_sqlany_bind_param_info);
+    result = s_imp_drh->api.sqlany_get_bind_param_info(s_sqlany_stmt, s_index, &s_sqlany_bind_param_info);
 
     //FIXME handle failed result
     multi_result = rb_ary_new();
@@ -1171,7 +1231,7 @@ static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE api, VALUE sqlany_s
 
 /*
  * call-seq:
- *   sqlany_num_params(VALUE api, VALUE sqlany_stmt) -> VALUE result
+ *   sqlany_num_params(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
  * 
  *  Returns the number of parameters that are expected for a prepared
  *  statement.
@@ -1180,7 +1240,7 @@ static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE api, VALUE sqlany_s
  *  using sqlany_bind_param(). 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was returned from sqlany_prepare().
  *
  *  <b>Returns</b>:
@@ -1188,23 +1248,23 @@ static_SQLAnywhereInterface_sqlany_get_bind_param_info(VALUE api, VALUE sqlany_s
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_num_params(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_num_params(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     sacapi_i32 result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
 
-    result = s_api->sqlany_num_params(s_sqlany_stmt);
+    result = s_imp_drh->api.sqlany_num_params(s_sqlany_stmt);
     
     return( INT2NUM(result) );    
 }
 
 /*
  * call-seq:
- *   sqlany_get_next_result(VALUE api, VALUE sqlany_stmt) -> VALUE result
+ *   sqlany_get_next_result(VALUE imp_drh, VALUE sqlany_stmt) -> VALUE result
  * 
  *  Advances to the next result set in a multiple result set query.
  *
@@ -1213,7 +1273,7 @@ static_SQLAnywhereInterface_sqlany_num_params(VALUE api, VALUE sqlany_stmt)
  * 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was executed by sqlany_execute() or sqlany_execute_direct().
  *
  *  <b>Returns</b>:
@@ -1221,23 +1281,23 @@ static_SQLAnywhereInterface_sqlany_num_params(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_get_next_result(VALUE api, VALUE sqlany_stmt)
+static_SQLAnywhereInterface_sqlany_get_next_result(VALUE imp_drh, VALUE sqlany_stmt)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
 
-    result = s_api->sqlany_get_next_result(s_sqlany_stmt);
+    result = s_imp_drh->api.sqlany_get_next_result(s_sqlany_stmt);
     
     return( INT2NUM(result) );    
 }
 
 /*
  * call-seq:
- *   sqlany_fetch_absolute(VALUE api, VALUE sqlany_stmt, VALUE offset) -> VALUE result
+ *   sqlany_fetch_absolute(VALUE imp_drh, VALUE sqlany_stmt, VALUE offset) -> VALUE result
  * 
  *  Fetches data at a specific row number in the result set.
  *
@@ -1245,7 +1305,7 @@ static_SQLAnywhereInterface_sqlany_get_next_result(VALUE api, VALUE sqlany_stmt)
  *  specified and fetches the data at that row. 
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_stmt</tt> -- A statement object that was executed by sqlany_execute() or sqlany_execute_direct().
  *  - <tt>VALUE offset</tt> -- The row number to be fetched. The first row is <tt>1</tt>, the last row is <tt>-1</tt>.
  *
@@ -1254,29 +1314,29 @@ static_SQLAnywhereInterface_sqlany_get_next_result(VALUE api, VALUE sqlany_stmt)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_fetch_absolute(VALUE api, VALUE sqlany_stmt, VALUE offset)
+static_SQLAnywhereInterface_sqlany_fetch_absolute(VALUE imp_drh, VALUE sqlany_stmt, VALUE offset)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_stmt* s_sqlany_stmt;
     sacapi_i32  s_offset;
     sacapi_bool result;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_stmt, a_sqlany_stmt, s_sqlany_stmt);
     s_offset = NUM2INT(offset);
-    result = s_api->sqlany_fetch_absolute(s_sqlany_stmt, s_offset);
+    result = s_imp_drh->api.sqlany_fetch_absolute(s_sqlany_stmt, s_offset);
     
     return( INT2NUM(result) );    
 }
 
 /*
  * call-seq:
- *   sqlany_sqlstate(VALUE api, VALUE sqlany_conn) -> VALUE sqlstate_str
+ *   sqlany_sqlstate(VALUE imp_drh, VALUE sqlany_conn) -> VALUE sqlstate_str
  * 
  *  Retrieves the current SQL state.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -1284,29 +1344,29 @@ static_SQLAnywhereInterface_sqlany_fetch_absolute(VALUE api, VALUE sqlany_stmt, 
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_sqlstate(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_sqlstate(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
     size_t s_size; 
     char   s_buffer[255];
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    s_size = s_api->sqlany_sqlstate(s_sqlany_conn, s_buffer, sizeof(s_buffer));
+    s_size = s_imp_drh->api.sqlany_sqlstate(s_sqlany_conn, s_buffer, sizeof(s_buffer));
 
     return( rb_str_new(s_buffer, s_size));
 }
 
 /*
  * call-seq:
- *   sqlany_clear_error(VALUE api, VALUE sqlany_conn) -> nil
+ *   sqlany_clear_error(VALUE imp_drh, VALUE sqlany_conn) -> nil
  * 
  *  Clears the last stored error code.
  *  
  *  <b>Parameters</b>:
- *  - <tt>VALUE api</tt> -- An initialized API structure to finalize.
+ *  - <tt>VALUE imp_drh</tt> -- An initialized API structure to finalize.
  *  - <tt>VALUE sqlany_conn</tt> -- A connection object that was connected by sqlany_connect().
  *
  *  <b>Returns</b>:
@@ -1314,15 +1374,15 @@ static_SQLAnywhereInterface_sqlany_sqlstate(VALUE api, VALUE sqlany_conn)
  *   
  */
 static VALUE
-static_SQLAnywhereInterface_sqlany_clear_error(VALUE api, VALUE sqlany_conn)
+static_SQLAnywhereInterface_sqlany_clear_error(VALUE imp_drh, VALUE sqlany_conn)
 {
-    SQLAnywhereInterface* s_api;
+    imp_drh_st* s_imp_drh;
     a_sqlany_connection* s_sqlany_conn;
 
-    Data_Get_Struct(api, SQLAnywhereInterface, s_api);
+    Data_Get_Struct(imp_drh, imp_drh_st, s_imp_drh);
     Data_Get_Struct(sqlany_conn, a_sqlany_connection, s_sqlany_conn);
 
-    s_api->sqlany_clear_error(s_sqlany_conn);
+    s_imp_drh->api.sqlany_clear_error(s_sqlany_conn);
     
     return( Qnil );
 }
@@ -1651,6 +1711,7 @@ void Init_sqlanywhere()
   rb_define_method(cSQLAnywhereInterface, "sqlany_rollback", static_SQLAnywhereInterface_sqlany_rollback, 1);
   rb_define_method(cSQLAnywhereInterface, "sqlany_prepare", static_SQLAnywhereInterface_sqlany_prepare, 2);
   rb_define_method(cSQLAnywhereInterface, "sqlany_free_stmt", static_SQLAnywhereInterface_sqlany_free_stmt, 1);
+  rb_define_method(cSQLAnywhereInterface, "sqlany_reset", static_SQLAnywhereInterface_sqlany_reset, 1);
   rb_define_method(cSQLAnywhereInterface, "sqlany_execute", static_SQLAnywhereInterface_sqlany_execute, 1);
   rb_define_method(cSQLAnywhereInterface, "sqlany_affected_rows", static_SQLAnywhereInterface_sqlany_affected_rows, 1);
   rb_define_method(cSQLAnywhereInterface, "sqlany_describe_bind_param", static_SQLAnywhereInterface_sqlany_describe_bind_param, 2);

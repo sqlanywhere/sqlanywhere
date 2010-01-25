@@ -5,7 +5,7 @@ functionality provided by the SQL Anywhere DBCAPI library. This driver
 is intended to be a base-level library to be used by interface libraries
 such as Ruby-DBI and ActiveRecord.
 
-This driver can be used with SQL Anywhere 11 and SQL Anywhere 10.
+This driver can be used with SQL Anywhere 10 and later versions.
 
 This driver is licensed under the Apache License, Version 2.
 

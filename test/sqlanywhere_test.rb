@@ -1,6 +1,6 @@
 #====================================================
 #
-#    Copyright 2008-2009 iAnywhere Solutions, Inc.
+#    Copyright 2008-2010 iAnywhere Solutions, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -137,9 +137,9 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_column_info(rs, 9, "_unsigned_int_", Types::A_UVAL32, 4)
     assert_column_info(rs, 10, "_signed_smallint_", Types::A_VAL16, 2)
     assert_column_info(rs, 11, "_unsigned_smallint_", Types::A_UVAL16, 2)
-    assert_column_info(rs, 12, "_signed_tinyint_", Types::A_VAL8, 1)
-    assert_column_info(rs, 13, "_unsigned_tinyint_", Types::A_VAL8, 1)
-    assert_column_info(rs, 14, "_bit_", Types::A_UVAL8, 1)
+    assert_column_info(rs, 12, "_signed_tinyint_", Types::A_UVAL8, 1)
+    assert_column_info(rs, 13, "_unsigned_tinyint_", Types::A_UVAL8, 1)
+    assert_column_info(rs, 14, "_bit_", Types::A_VAL8, 1)
     assert_column_info(rs, 15, "_date_", Types::A_STRING, 10)
     assert_column_info(rs, 16, "_datetime_", Types::A_STRING, 23)
     assert_column_info(rs, 17, "_smalldatetime_", Types::A_STRING, 23)

@@ -1,6 +1,6 @@
 #====================================================
 #
-#    Copyright 2008-2009 iAnywhere Solutions, Inc.
+#    Copyright 2008-2010 iAnywhere Solutions, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,6 @@ PACKAGE_NAME = "sqlanywhere"
 ARCH=Config::CONFIG['arch']
 
 Dir.mkdir('lib') unless File.directory?('lib')
-
 pkg_version = ""
 
 library_file = ARCH =~ /darwin/ ? "sqlanywhere.bundle" : "sqlanywhere.so"
@@ -120,7 +119,7 @@ file "sqlanywhere-#{pkg_version}.gem" => ["Rakefile",
    spec.files = Dir['ext/**/*'] + Dir['lib/**/*'] + Dir['test/**/*'] + Dir['CHANGELOG'] + Dir['LICENSE'] + Dir['README'] + Dir['Rakefile']
    # Since this contains no compilked binaries, set it to be platform RUBY
    spec.platform = Gem::Platform::RUBY
-   spec.extensions = 'ext/extconf.rb'					
+   spec.extensions = 'ext/extconf.rb'
    Gem::Builder.new(spec).build
 end
 

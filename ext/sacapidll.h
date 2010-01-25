@@ -1,6 +1,6 @@
 /* ====================================================
  * 
- *       Copyright 2008-2009 iAnywhere Solutions, Inc.
+ *       Copyright 2008-2010 iAnywhere Solutions, Inc.
  * 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -70,15 +70,29 @@ typedef sacapi_bool (*sqlany_client_version_func)( char * buffer, size_t len );
 typedef sacapi_i32 (*sqlany_error_func)( a_sqlany_connection * sqlany_conn, char * buffer, size_t size );
 typedef size_t (*sqlany_sqlstate_func)( a_sqlany_connection * sqlany_conn, char * buffer, size_t size );
 typedef void (*sqlany_clear_error_func)( a_sqlany_connection * sqlany_conn );
+#if _SACAPI_VERSION+0 >= 2
+    typedef a_sqlany_interface_context *(*sqlany_init_ex_func)( const char *app_name, sacapi_u32 api_version, sacapi_u32 *max_version );
+    typedef void (*sqlany_fini_ex_func)( a_sqlany_interface_context *context );
+    typedef a_sqlany_connection *(*sqlany_new_connection_ex_func)( a_sqlany_interface_context *context );
+    typedef a_sqlany_connection *(*sqlany_make_connection_ex_func)( a_sqlany_interface_context *context, void *arg );
+    typedef sacapi_bool (*sqlany_client_version_ex_func)( a_sqlany_interface_context *context, char *buffer, size_t len );
+    typedef void (*sqlany_cancel_func)( a_sqlany_connection * sqlany_conn );
+#endif
 
 #if defined( __cplusplus )
 }
 #endif
 
+/// @internal
 #define function( x ) 	x ## _func x
-/** An API interface structure.
- * The user would need only one instance of this in their environment. When the
- * instance is initialized, the DLL will be loaded and all the entry points will be looked up.
+
+/** The SQL Anywhere C API interface structure.
+ *
+ * Only one instance of this structure is required in your application environment.  This structure
+ * is initialized by the sqlany_initialize_interface method.   It attempts to load the SQL Anywhere C
+ * API DLL or shared object dynamically and looks up all the entry points of the DLL.  The fields in
+ * the SQLAnywhereInterface structure is populated to point to the corresponding functions in the DLL.
+ * \sa sqlany_initialize_interface()
  */
 typedef struct SQLAnywhereInterface {
     /** DLL handle.
@@ -225,26 +239,91 @@ typedef struct SQLAnywhereInterface {
      */
     function( sqlany_clear_error );		
 
+#if _SACAPI_VERSION+0 >= 2
+    /** Pointer to ::sqlany_init_ex() function.
+     */
+    function( sqlany_init_ex );
+
+    /** Pointer to ::sqlany_fini_ex() function.
+     */
+    function( sqlany_fini_ex );
+
+    /** Pointer to ::sqlany_new_connection_ex() function.
+     */
+    function( sqlany_new_connection_ex );
+
+    /** Pointer to ::sqlany_make_connection_ex() function.
+     */
+    function( sqlany_make_connection_ex );
+
+    /** Pointer to ::sqlany_client_version_ex() function.
+     */
+    function( sqlany_client_version_ex );
+
+    /** Pointer to ::sqlany_cancel() function.
+     */
+    function( sqlany_cancel );		
+#endif
+
 } SQLAnywhereInterface;
 #undef function
 
 /** Initializes the SQLAnywhereInterface object and loads the DLL dynamically.
+ *
+ * Use the following statement to include the function prototype:
+ * 
+ * <pre>
+ * \#include "sacapidll.h"
+ * </pre>
+ *
  * This function attempts to load the SQL Anywhere C API DLL dynamically and looks up all
- * the entry points of the DLL. The fields in the SQLAnywhereInterface structure will be
+ * the entry points of the DLL. The fields in the SQLAnywhereInterface structure are
  * populated to point to the corresponding functions in the DLL. If the optional path argument
- * is NULL, the environment variable SQLANY_DLL_PATH will be checked. If the variable is set, 
- * the library will attempt to load the DLL specified by the environment variable. If that fails,
- * the interface will attempt to load the DLL directly (this relies on the environment being
+ * is NULL, the environment variable SQLANY_DLL_PATH is checked. If the variable is set, 
+ * the library attempts to load the DLL specified by the environment variable. If that fails,
+ * the interface attempts to load the DLL directly (this relies on the environment being
  * setup correctly).
+ *
+ * To view examples of the sqlany_initialize_interface method in use, see the following topics:
+ *
+ * <ul>
+ * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
+ * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
+ * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
+ * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * </ul>
+ *
  * \param api An API structure to initialize.
- * \param optional_path_to_dll An optional argument that specifies a path to the DLL API to load.
+ * \param optional_path_to_dll An optional argument that specifies a path to the SQL Anywhere C API DLL.
  * \return 1 on successful initialization, and 0 on failure.
  */
 int sqlany_initialize_interface( SQLAnywhereInterface * api, const char * optional_path_to_dll );
 
-/** Finalize and free resources associated with the SQL Anywhere C API DLL.
- * This function will unload the library and uninitialize the supplied SQLAnywhereInterface
- * structure. 
+/** Unloads the C API DLL library and uninitializes the SQLAnywhereInterface structure.
+ *
+ * Use the following statement to include the function prototype:
+ * 
+ * <pre>
+ * \#include "sacapidll.h"
+ * </pre>
+ *
+ * Use this method to finalize and free resources associated with the SQL Anywhere C API DLL.
+ *
+ * To view examples of the sqlany_finalize_interface method in use, see the following topics:
+ *
+ * <ul>
+ * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
+ * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
+ * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
+ * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * </ul>
+ *
  * \param api An initialized structure to finalize.
  */
 
