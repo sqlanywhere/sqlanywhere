@@ -27,7 +27,6 @@ require 'date'
 
 begin
   require 'rubygems'
-  gem 'sqlanywhere'
   unless defined? SQLAnywhere
     require 'sqlanywhere'
   end    
@@ -123,7 +122,8 @@ class SQLAnywhere_Test < Test::Unit::TestCase
   end
 
   def test_column_info
-    rs = exec_direct_with_test("SELECT TOP 2 * FROM \"types\" ORDER BY \"id\"")
+    is_iq = is_iq_table?("types")
+	rs = exec_direct_with_test("SELECT TOP 2 * FROM \"types\" ORDER BY \"id\"")
     assert_equal 22, @api.sqlany_num_cols(rs)
     assert_column_info(rs, 0, "id", Types::A_VAL32, 4)
     assert_column_info(rs, 1, "_binary_", Types::A_BINARY, 8)
@@ -136,7 +136,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_column_info(rs, 8, "_signed_int_", Types::A_VAL32, 4)
     assert_column_info(rs, 9, "_unsigned_int_", Types::A_UVAL32, 4)
     assert_column_info(rs, 10, "_signed_smallint_", Types::A_VAL16, 2)
-    assert_column_info(rs, 11, "_unsigned_smallint_", Types::A_UVAL16, 2)
+    assert_column_info(rs, 11, "_unsigned_smallint_", Types::A_UVAL16, 2) unless is_iq #IQ Does not have an unsigned small int datatype
     assert_column_info(rs, 12, "_signed_tinyint_", Types::A_UVAL8, 1)
     assert_column_info(rs, 13, "_unsigned_tinyint_", Types::A_UVAL8, 1)
     assert_column_info(rs, 14, "_bit_", Types::A_VAL8, 1)
@@ -151,7 +151,8 @@ class SQLAnywhere_Test < Test::Unit::TestCase
   end
 
   def test_bounds_on_types
-    rs = exec_direct_with_test("SELECT TOP 2 * FROM \"types\" ORDER BY \"id\"")    
+    is_iq = is_iq_table?("types")
+	rs = exec_direct_with_test("SELECT TOP 2 * FROM \"types\" ORDER BY \"id\"")    
     assert_succeeded @api.sqlany_fetch_next(rs)
     assert_class_and_value(rs, String, 1, "x") 
     assert_class_and_value(rs, String, 2, "1.1")
@@ -163,7 +164,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_class_and_value(rs, Bignum, 8, 2147483647)
     assert_class_and_value(rs, Bignum, 9, 4294967295)
     assert_class_and_value(rs, Fixnum, 10, 32767)
-    assert_class_and_value(rs, Fixnum, 11, 65535)  
+    assert_class_and_value(rs, Fixnum, 11, 65535) unless is_iq #IQ Does not have an unsigned small int datatype
     assert_class_and_value(rs, Fixnum, 12, 255)    
     assert_class_and_value(rs, Fixnum, 13, 255)
     assert_class_and_value(rs, Fixnum, 14, 1)
@@ -186,7 +187,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_class_and_value(rs, Bignum, 8, -2147483648)
     assert_class_and_value(rs, Fixnum, 9, 0)    
     assert_class_and_value(rs, Fixnum, 10, -32768)    
-    assert_class_and_value(rs, Fixnum, 11, 0)    
+    assert_class_and_value(rs, Fixnum, 11, 0) unless is_iq   #IQ Does not have an unsigned small int datatype
     assert_class_and_value(rs, Fixnum, 12, 0)    
     assert_class_and_value(rs, Fixnum, 13, 0)
     assert_class_and_value(rs, Fixnum, 14, 0)
@@ -201,9 +202,10 @@ class SQLAnywhere_Test < Test::Unit::TestCase
   end
 
   def test_prepared_stmt
-    stmt = @api.sqlany_prepare(@conn, "SELECT * FROM \"types\" WHERE \"id\" = ?")
+    is_iq = is_iq_table?("types")
+	stmt = @api.sqlany_prepare(@conn, "SELECT * FROM \"types\" WHERE \"id\" = ?")
     assert_not_nil stmt
-    assert_failed @api.sqlany_execute(stmt)
+    assert_failed @api.sqlany_execute(stmt) unless is_iq #IQ does not throw an error here
     assert_equal 1, @api.sqlany_num_params(stmt)
     res, param = @api.sqlany_describe_bind_param(stmt, 0)
     assert_not_equal 0, res
@@ -271,8 +273,9 @@ class SQLAnywhere_Test < Test::Unit::TestCase
   end  
 
   def test_insert_uint16
-    assert_insert("_unsigned_smallint_", 65535, Fixnum)
-    assert_insert("_unsigned_smallint_", 0, Fixnum)
+    is_iq = is_iq_table?("types") #IQ Does not have an unsigned small int datatype
+	assert_insert("_unsigned_smallint_", 65535, Fixnum) unless is_iq
+    assert_insert("_unsigned_smallint_", 0, Fixnum) unless is_iq
   end
 
   def test_insert_int8
@@ -281,8 +284,9 @@ class SQLAnywhere_Test < Test::Unit::TestCase
   end  
 
   def test_insert_uint8
-    assert_insert("_unsigned_smallint_", 255, Fixnum)
-    assert_insert("_unsigned_smallint_", 0, Fixnum)
+    is_iq = is_iq_table?("types") #IQ Does not have an unsigned small int datatype
+	assert_insert("_unsigned_smallint_", 255, Fixnum) unless is_iq
+    assert_insert("_unsigned_smallint_", 0, Fixnum) unless is_iq
   end
 
   def test_insert_date
@@ -311,7 +315,13 @@ class SQLAnywhere_Test < Test::Unit::TestCase
 
   def test_insert_real
     assert_insert("_real_", 3.402823e+38, Float, 1e+32)
-  end   
+  end  
+
+  def is_iq_table?(table_name)
+	rs = @api.sqlany_execute_direct(@conn, "SELECT server_type FROM SYS.SYSTABLE WHERE table_name = '#{table_name}'")
+	@api.sqlany_fetch_next(rs)
+	return @api.sqlany_get_column(rs, 0)[1] == 'IQ'
+  end
 
   def assert_insert(column_name, value, type, delta = nil)
     stmt = @api.sqlany_prepare(@conn, 'INSERT INTO "types"("id", "' + column_name + '", "_bit_") VALUES(3, ?, 1)')

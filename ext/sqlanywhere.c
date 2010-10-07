@@ -1460,16 +1460,22 @@ static_Bind_set_value(VALUE bind, VALUE val)
        {
 	 case T_STRING:      
 	    s_bind->value.length  = malloc(sizeof(size_t));
-	    length = RSTRING(val)->len;
+	    length = RSTRING_LEN(val);
 	    *s_bind->value.length = length;
 	    s_bind->value.buffer = malloc(length);
-	    memcpy(s_bind->value.buffer, RSTRING(val)->ptr, length);
+	    memcpy(s_bind->value.buffer, RSTRING_PTR(val), length);
 	    s_bind->value.type = A_STRING;
 	    break;
 	 case T_FIXNUM:
-	    s_bind->value.buffer = malloc(sizeof(int));
-	    *((int*)s_bind->value.buffer) = FIX2INT(val);
-	    s_bind->value.type = A_VAL32;
+	    if(sizeof(void*) == 4){ //32-bit
+            s_bind->value.buffer = malloc(sizeof(int));
+	        *((int*)s_bind->value.buffer) = FIX2INT(val);
+	        s_bind->value.type = A_VAL32;
+	    }else{ //64-bit
+            s_bind->value.buffer = malloc(sizeof(long));
+            *((long*)s_bind->value.buffer) = FIX2LONG(val);
+            s_bind->value.type = A_VAL64;
+	    }
 	    break;
 	 case T_BIGNUM:
 	    s_bind->value.buffer = malloc(sizeof(LONG_LONG));

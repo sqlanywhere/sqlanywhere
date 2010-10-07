@@ -145,10 +145,10 @@ typedef enum a_sqlany_data_type
  * To view examples of the a_sqlany_data_value structure in use, see the following topics:
  *
  * <ul>
- * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
- * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
- * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
- * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
+ * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
  * </ul>
  */
 typedef struct a_sqlany_data_value
@@ -184,9 +184,9 @@ typedef enum a_sqlany_data_direction
  * To view examples of the a_sqlany_bind_param structure in use, see the following topics:
  *
  * <ul>
- * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
- * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
- * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
  * </ul>
  * \sa sqlany_execute()
  */
@@ -204,7 +204,7 @@ typedef struct a_sqlany_bind_param
  *
  * The value types correspond to the embedded SQL data types.
  * For more information on embedded SQL data types, see
- * \salink{Embedded SQL data types, "http://dcx.sybase.com/1200en/dbprogramming_en12/esqlvar.html", "programming", "esqlvar"}.
+ * \salink{Embedded SQL data types, "http://dcx.sybase.com/1200en/dbprogramming/esqlvar.html", "programming", "esqlvar"}.
  *
  * \hideinitializers
  * \sa sqlany_get_column_info(), a_sqlany_column_info
@@ -262,7 +262,7 @@ typedef enum a_sqlany_native_type
  * sqlany_get_column_info() can be used to populate this structure.
  *
  * To view an example of the a_sqlany_column_info structure in use, see 
- * \salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}.
+ * \salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}.
  */
 typedef struct a_sqlany_column_info
 {
@@ -290,9 +290,9 @@ typedef struct a_sqlany_column_info
  * To view examples of the a_sqlany_bind_param_info structure in use, see the following topics:
  *
  * <ul>
- * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
- * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
- * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
  * </ul>
  * \sa sqlany_execute()
  */
@@ -314,7 +314,7 @@ typedef struct a_sqlany_bind_param_info
  * to populate this structure with information about what was last retrieved by a fetch operation.
  *
  * To view an example of the a_sqlany_data_data_info structure in use, see
- * \salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}.
+ * \salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}.
  * \sa sqlany_get_data_info()
  */
 typedef struct a_sqlany_data_info
@@ -449,8 +449,8 @@ a_sqlany_connection * sqlany_make_connection( void * arg );
  * </pre>
  *
  * For more information on connecting to a SQL Anywhere database server, see
- * \salink{Connection parameters, "http://dcx.sybase.com/1200en/dbadmin_en12/da-conparm.html", "dbadmin", "da-conparm"} and 
- * \salink{SQL Anywhere database connections, "http://dcx.sybase.com/1200en/dbadmin_en12/da-dbconnections.html", "dbadmin", "da-dbconnections"}.
+ * \salink{Connection parameters, "http://dcx.sybase.com/1200en/dbadmin/da-conparm.html", "dbadmin", "da-conparm"} and 
+ * \salink{SQL Anywhere database connections, "http://dcx.sybase.com/1200en/dbadmin/da-dbconnections.html", "dbadmin", "da-dbconnections"}.
  *
  * \param sqlany_conn A connection object created by sqlany_new_connection().
  * \param str A SQL Anywhere connection string.
@@ -723,7 +723,7 @@ sacapi_i32 sqlany_num_cols( a_sqlany_stmt * sqlany_stmt );
  *
  * By default this function only returns an estimate. To return an exact count, set the row_counts option
  * on the connection. For more information on the row_counts option, see 
- * \salink{row_counts option [database], "http://dcx.sybase.com/1200en/dbadmin_en12/row-counts-option.html", "dbadmin", "row-counts-option"}.
+ * \salink{row_counts option [database], "http://dcx.sybase.com/1200en/dbadmin/row-counts-option.html", "dbadmin", "row-counts-option"}.
  *
  * \param sqlany_stmt A statement object that was executed by
  *     sqlany_execute() or sqlany_execute_direct().
@@ -844,7 +844,7 @@ sacapi_bool sqlany_client_version( char * buffer, size_t len );
 /** Retrieves the last error code and message stored in the connection object.
  *
  * For more information on SQLCODE error messages, see 
- * \salink{SQL Anywhere error messages sorted by SQLCODE, "http://dcx.sybase.com/1200en/saerrors_en12/sa-errors-by-sqlcode.html", "errors", "sa-errors-by-sqlcode"}.
+ * \salink{SQL Anywhere error messages sorted by SQLCODE, "http://dcx.sybase.com/1200en/saerrors/sa-errors-by-sqlcode.html", "errors", "sa-errors-by-sqlcode"}.
  *
  * \param sqlany_conn A connection object returned from sqlany_new_connection().
  * \param buffer A buffer to be filled with the error message.
@@ -857,7 +857,7 @@ sacapi_i32 sqlany_error( a_sqlany_connection * sqlany_conn, char * buffer, size_
 /** Retrieves the current SQLSTATE.
  *
  * For more information on SQLSTATE error messages, see 
- * \salink{SQL Anywhere error messages sorted by SQLSTATE, "http://dcx.sybase.com/1200en/saerrors_en12/sa-errors-by-sqlstate.html", "errors", "sa-errors-by-sqlstate"}.
+ * \salink{SQL Anywhere error messages sorted by SQLSTATE, "http://dcx.sybase.com/1200en/saerrors/sa-errors-by-sqlstate.html", "errors", "sa-errors-by-sqlstate"}.
  *
  * \param sqlany_conn A connection object returned from sqlany_new_connection().
  * \param buffer A buffer to be filled with the current 5-character SQLSTATE.

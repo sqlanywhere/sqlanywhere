@@ -22,7 +22,7 @@
 #
 #====================================================
 
-require 'ftools'
+require 'fileutils'
 require 'rbconfig'
 require 'rake/clean'
 require 'rake/rdoctask'
@@ -68,7 +68,7 @@ spec = Gem::Specification.new do |spec|
     SQL Anywhere  Driver for Ruby
   EOF
   spec.version = pkg_version
-  spec.autorequire = 'sqlanywhere'
+  #spec.autorequire = 'sqlanywhere'
   spec.has_rdoc = true
   spec.rubyforge_project = 'sqlanywhere'
   spec.homepage = 'http://sqlanywhere.rubyforge.org'
@@ -101,7 +101,7 @@ file "sqlanywhere-#{pkg_version}-#{spec.platform}.gem" => ["Rakefile",
    spec.files = Dir['ext/**/*'] + Dir['lib/**/*'] + Dir['test/**/*'] + Dir['CHANGELOG'] + Dir['LICENSE'] + Dir['README'] + Dir['Rakefile']
    # Set the gem to be platform specific since it includes compiled binaries   
    spec.platform = Gem::Platform::CURRENT
-   spec.extensions = ''
+   #spec.extensions = ''
    Gem::Builder.new(spec).build
 end
 
@@ -124,7 +124,7 @@ file "sqlanywhere-#{pkg_version}.gem" => ["Rakefile",
 end
 
 file File.join("lib", library_file) => [File.join("ext", library_file)] do
-   File.copy(File.join("ext", library_file), "lib")
+   FileUtils.copy(File.join("ext", library_file), "lib")
 end
 
 file File.join("ext", library_file) => ["ext/sqlanywhere.c"] do

@@ -287,13 +287,13 @@ typedef struct SQLAnywhereInterface {
  * To view examples of the sqlany_initialize_interface method in use, see the following topics:
  *
  * <ul>
- * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
- * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
- * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
- * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
- * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
- * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
- * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
+ * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
+ * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
+ * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
  * </ul>
  *
  * \param api An API structure to initialize.
@@ -315,13 +315,13 @@ int sqlany_initialize_interface( SQLAnywhereInterface * api, const char * option
  * To view examples of the sqlany_finalize_interface method in use, see the following topics:
  *
  * <ul>
- * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
- * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
- * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
- * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
- * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
- * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
- * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming_en12/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
+ * <li>\salink{connecting.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-connecting-cpp.html", "programming", "pg-c-api-connecting-cpp"} 
+ * <li>\salink{dbcapi_isql.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-dbcapi-isql-cpp.html", "programming", "pg-c-api-dbcapi-isql-cpp"}
+ * <li>\salink{fetching_a_result_set.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-fetching-a-result-set-cpp.html", "programming", "pg-c-api-fetching-a-result-set-cpp"}
+ * <li>\salink{fetching_multiple_from_sp.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-fetching-multiple-from-sp-cpp.html", "programming", "pg-c-api-fetching-multiple-from-sp-cpp"}
+ * <li>\salink{preparing_statements.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-preparing-statements-cpp.html", "programming", "pg-c-api-preparing-statements-cpp"}
+ * <li>\salink{send_retrieve_full_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-full-blob-cpp.html", "programming", "pg-c-api-send-retrieve-full-blob-cpp"}
+ * <li>\salink{send_retrieve_part_blob.cpp, "http://dcx.sybase.com/1200en/dbprogramming/pg-c-api-send-retrieve-part-blob-cpp.html", "programming", "pg-c-api-send-retrieve-part-blob-cpp"}
  * </ul>
  *
  * \param api An initialized structure to finalize.
