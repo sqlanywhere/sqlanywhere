@@ -1,6 +1,6 @@
 // *****************************************************
-// Copyright (c) 2008-2012 iAnywhere Solutions, Inc.
-// Portions copyright (c) 2008-2012 Sybase, Inc.
+// Copyright (c) 2010-2012 iAnywhere Solutions, Inc.
+// Portions copyright (c) 2010-2012 Sybase, Inc.
 // All rights reserved. All unpublished rights reserved.
 // *****************************************************
 IF EXISTS( SELECT * FROM "SYS"."SYSTAB" WHERE "table_name" = 'test') THEN
@@ -18,17 +18,17 @@ CREATE TABLE "test" (
 
 CREATE TABLE "types" (
   "id" INTEGER PRIMARY KEY,
-  "_binary_" BINARY(8) DEFAULT NULL,
+  "_binary_" VARBINARY(8) DEFAULT NULL,
   "_numeric_" NUMERIC(2,1),
   "_decimal_" DECIMAL(2,1),
-  "_bounded_string_" CHAR(255) DEFAULT NULL,
+  "_bounded_string_" VARCHAR(255) DEFAULT NULL,
   "_unbounded_string_" LONG VARCHAR DEFAULT NULL,
   "_signed_bigint_" BIGINT DEFAULT NULL,
   "_unsigned_bigint_" UNSIGNED BIGINT DEFAULT NULL,
   "_signed_int_" INTEGER DEFAULT NULL,
   "_unsigned_int_" UNSIGNED INTEGER DEFAULT NULL,
   "_signed_smallint_" SMALLINT DEFAULT NULL,
-  "_unsigned_smallint_" UNSIGNED SMALLINT DEFAULT NULL,
+  "_unused_for_iq_" UNSIGNED INT DEFAULT NULL,
   "_signed_tinyint_" TINYINT DEFAULT NULL,
   "_unsigned_tinyint_" UNSIGNED TINYINT DEFAULT NULL,
   "_bit_" BIT,
@@ -43,7 +43,7 @@ CREATE TABLE "types" (
 
 INSERT INTO types VALUES 
 ( 0,
-  CAST ( 0x78 AS BINARY ),
+  CAST ( 0x78 AS VARBINARY ),
   1.1,
   1.1,
   'Bounded String Test',
@@ -68,7 +68,7 @@ INSERT INTO types VALUES
 
 INSERT INTO types VALUES 
 ( 1,
-  CAST ( 0xFF AS BINARY ), 
+  CAST ( 0xFF AS VARBINARY ), 
   -1.1,
   -1.1,
   '',

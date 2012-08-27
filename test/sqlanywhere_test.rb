@@ -1,6 +1,6 @@
 #====================================================
 #
-#    Copyright 2008-2010 iAnywhere Solutions, Inc.
+#    Copyright 2012 iAnywhere Solutions, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,14 @@
 # While not a requirement of the license, if you do modify this file, we
 # would appreciate hearing about it.   Please email sqlany_interfaces@sybase.com
 #
+#
+#====================================================
+#
+# This sample program contains a hard-coded userid and password
+# to connect to the demo database. This is done to simplify the
+# sample program. The use of hard-coded passwords is strongly
+# discouraged in production code.  A best practice for production
+# code would be to prompt the user for the userid and password.
 #
 #====================================================
 

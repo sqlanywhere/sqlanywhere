@@ -75,7 +75,7 @@ By default, rake will attempt to use Microsoft <tt>nmake</tt> when building unde
 
 3. Start the testing database:
 
-    dbeng11 test.db
+    dbeng12 test.db
  
 4. Create the test schema:
 
@@ -85,8 +85,8 @@ By default, rake will attempt to use Microsoft <tt>nmake</tt> when building unde
 
     ruby sqlanywhere_test.rb
 
-<b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information
-review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
+<b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information,
+review the online documentation here [http://dcx.sybase.com/index.html#1200/en/dbadmin/da-envvar.html].
 
 ==Sample
 
