@@ -59,4 +59,7 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-fini-met.html
   attach_function :sqlany_fini, [], :void
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-prepare-met.html
+  attach_function :sqlany_prepare, [:pointer, :string], :pointer
 end
