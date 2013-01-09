@@ -34,10 +34,14 @@ require 'test/unit'
 require 'date'
 
 begin
-  require 'rubygems'
-  unless defined? SQLAnywhere
-    require 'sqlanywhere'
-  end    
+  #require 'rubygems'
+  #unless defined? SQLAnywhere
+  #  require 'sqlanywhere'
+  #end
+  
+  
+  require File.dirname(__FILE__) + '/../lib/sqlanywhere.rb'
+
 end
 
 class Types
