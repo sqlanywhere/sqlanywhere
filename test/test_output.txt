@@ -4,328 +4,324 @@ Run options:
 
 EEEEEEEEEEEEEEEEEEEEEEEEEEE
 
-Finished tests in 0.868000s, 31.1060 tests/s, 155.5300 assertions/s.
+Finished tests in 0.852000s, 31.6901 tests/s, 165.4930 assertions/s.
 
-  1) Error:
-test_bounds_on_types(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column' for #<SQLAnywhere::SQLAnywhereInterface:0x157024fc>
-    sqlanywhere_test.rb:335:in `is_iq_table?'
-    sqlanywhere_test.rb:166:in `test_bounds_on_types'
-    org/jruby/RubyBasicObject.java:1659:in `__send__'
+  1) Failure:
+test_bounds_on_types(SQLAnywhere_Test) [sqlanywhere_test.rb:169]:
+<"x"> expected but was
+<"x\x7F">.
 
   2) Error:
 test_bounds_on_types(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x157024fc>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x65277345>
     sqlanywhere_test.rb:86:in `teardown'
 
   3) Error:
 test_column_info(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column' for #<SQLAnywhere::SQLAnywhereInterface:0x2a884ab9>
-    sqlanywhere_test.rb:335:in `is_iq_table?'
-    sqlanywhere_test.rb:137:in `test_column_info'
+NoMethodError: undefined method `sqlany_num_cols' for #<SQLAnywhere::SQLAnywhereInterface:0x633d60e6>
+    sqlanywhere_test.rb:139:in `test_column_info'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   4) Error:
 test_column_info(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2a884ab9>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x633d60e6>
     sqlanywhere_test.rb:86:in `teardown'
 
   5) Error:
 test_commit(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xa1de326>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2b881b66>
     sqlanywhere_test.rb:401:in `setup_transaction'
     sqlanywhere_test.rb:124:in `test_commit'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   6) Error:
 test_commit(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xa1de326>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2b881b66>
     sqlanywhere_test.rb:86:in `teardown'
 
   7) Error:
 test_errors(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4fc201f6>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4f964d62>
     sqlanywhere_test.rb:104:in `test_errors'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   8) Error:
 test_errors(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4fc201f6>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4f964d62>
     sqlanywhere_test.rb:86:in `teardown'
 
   9) Error:
 test_execute_immediate(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x57e2e611>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3f965e77>
     sqlanywhere_test.rb:99:in `test_execute_immediate'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  10) Error:
 test_execute_immediate(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x57e2e611>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3f965e77>
     sqlanywhere_test.rb:86:in `teardown'
 
  11) Error:
 test_insert_binary(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0xa77ba09>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x450b0c91>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:243:in `test_insert_binary'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  12) Error:
 test_insert_binary(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xa77ba09>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x450b0c91>
     sqlanywhere_test.rb:86:in `teardown'
 
  13) Error:
 test_insert_bounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x34d28e76>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x349685ab>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:255:in `test_insert_bounded_string'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  14) Error:
 test_insert_bounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x34d28e76>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x349685ab>
     sqlanywhere_test.rb:86:in `teardown'
 
  15) Error:
 test_insert_date(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x5c24ab81>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0xeb21dcb>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:305:in `test_insert_date'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  16) Error:
 test_insert_date(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x5c24ab81>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xeb21dcb>
     sqlanywhere_test.rb:86:in `teardown'
 
  17) Error:
 test_insert_datetime(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x1e6d1501>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x716e932a>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:309:in `test_insert_datetime'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  18) Error:
 test_insert_datetime(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1e6d1501>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x716e932a>
     sqlanywhere_test.rb:86:in `teardown'
 
  19) Error:
 test_insert_decimal(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0xf47f2a4>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x3a56aa3d>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:251:in `test_insert_decimal'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  20) Error:
 test_insert_decimal(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xf47f2a4>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3a56aa3d>
     sqlanywhere_test.rb:86:in `teardown'
 
  21) Error:
 test_insert_double(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x49cac07e>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x6b870011>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:321:in `test_insert_double'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  22) Error:
 test_insert_double(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x49cac07e>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6b870011>
     sqlanywhere_test.rb:86:in `teardown'
 
  23) Error:
 test_insert_float(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x5805c6b1>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x16e106ac>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:325:in `test_insert_float'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  24) Error:
 test_insert_float(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x5805c6b1>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x16e106ac>
     sqlanywhere_test.rb:86:in `teardown'
 
  25) Error:
 test_insert_int16(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x296dfc2d>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x6b77d169>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:283:in `test_insert_int16'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  26) Error:
 test_insert_int16(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x296dfc2d>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6b77d169>
     sqlanywhere_test.rb:86:in `teardown'
 
  27) Error:
 test_insert_int32(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x4721ee77>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x7c86217c>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:273:in `test_insert_int32'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  28) Error:
 test_insert_int32(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4721ee77>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x7c86217c>
     sqlanywhere_test.rb:86:in `teardown'
 
  29) Error:
 test_insert_int64(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x64cb9c49>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x449d81e3>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:263:in `test_insert_int64'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  30) Error:
 test_insert_int64(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x64cb9c49>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x449d81e3>
     sqlanywhere_test.rb:86:in `teardown'
 
  31) Error:
 test_insert_int8(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x21f0de4e>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x29e534ad>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:294:in `test_insert_int8'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  32) Error:
 test_insert_int8(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x21f0de4e>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x29e534ad>
     sqlanywhere_test.rb:86:in `teardown'
 
  33) Error:
 test_insert_numeric(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x457fbf42>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x219ade58>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:247:in `test_insert_numeric'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  34) Error:
 test_insert_numeric(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x457fbf42>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x219ade58>
     sqlanywhere_test.rb:86:in `teardown'
 
  35) Error:
 test_insert_real(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x5da3676a>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x6c9f55d2>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:329:in `test_insert_real'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  36) Error:
 test_insert_real(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x5da3676a>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6c9f55d2>
     sqlanywhere_test.rb:86:in `teardown'
 
  37) Error:
 test_insert_smalldate(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x1147791>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x7e5388f4>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:313:in `test_insert_smalldate'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  38) Error:
 test_insert_smalldate(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1147791>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x7e5388f4>
     sqlanywhere_test.rb:86:in `teardown'
 
  39) Error:
 test_insert_timestamp(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x1531a989>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x275369c0>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:317:in `test_insert_timestamp'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  40) Error:
 test_insert_timestamp(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1531a989>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x275369c0>
     sqlanywhere_test.rb:86:in `teardown'
 
  41) Error:
 test_insert_uint16(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column' for #<SQLAnywhere::SQLAnywhereInterface:0x75f369e6>
-    sqlanywhere_test.rb:335:in `is_iq_table?'
-    sqlanywhere_test.rb:288:in `test_insert_uint16'
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x16b8a16c>
+    sqlanywhere_test.rb:339:in `assert_insert'
+    sqlanywhere_test.rb:289:in `test_insert_uint16'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  42) Error:
 test_insert_uint16(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x75f369e6>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x16b8a16c>
     sqlanywhere_test.rb:86:in `teardown'
 
  43) Error:
 test_insert_uint32(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x53051cab>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x44547842>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:278:in `test_insert_uint32'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  44) Error:
 test_insert_uint32(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x53051cab>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x44547842>
     sqlanywhere_test.rb:86:in `teardown'
 
  45) Error:
 test_insert_uint64(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x2b9027de>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x1735af2d>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:268:in `test_insert_uint64'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  46) Error:
 test_insert_uint64(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2b9027de>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1735af2d>
     sqlanywhere_test.rb:86:in `teardown'
 
  47) Error:
 test_insert_uint8(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column' for #<SQLAnywhere::SQLAnywhereInterface:0x28979401>
-    sqlanywhere_test.rb:335:in `is_iq_table?'
-    sqlanywhere_test.rb:299:in `test_insert_uint8'
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0xb680af5>
+    sqlanywhere_test.rb:339:in `assert_insert'
+    sqlanywhere_test.rb:300:in `test_insert_uint8'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  48) Error:
 test_insert_uint8(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x28979401>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xb680af5>
     sqlanywhere_test.rb:86:in `teardown'
 
  49) Error:
 test_insert_unbounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x49ab14bd>
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x749d4921>
     sqlanywhere_test.rb:339:in `assert_insert'
     sqlanywhere_test.rb:259:in `test_insert_unbounded_string'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  50) Error:
 test_insert_unbounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x49ab14bd>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x749d4921>
     sqlanywhere_test.rb:86:in `teardown'
 
  51) Error:
 test_prepared_stmt(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column' for #<SQLAnywhere::SQLAnywhereInterface:0x2147d4bb>
-    sqlanywhere_test.rb:335:in `is_iq_table?'
-    sqlanywhere_test.rb:217:in `test_prepared_stmt'
+NoMethodError: undefined method `sqlany_prepare' for #<SQLAnywhere::SQLAnywhereInterface:0x3874fb53>
+    sqlanywhere_test.rb:218:in `test_prepared_stmt'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  52) Error:
 test_prepared_stmt(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2147d4bb>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3874fb53>
     sqlanywhere_test.rb:86:in `teardown'
 
  53) Error:
 test_rollback(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x43a397b2>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4f98b5c>
     sqlanywhere_test.rb:401:in `setup_transaction'
     sqlanywhere_test.rb:116:in `test_rollback'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  54) Error:
 test_rollback(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x43a397b2>
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x4f98b5c>
     sqlanywhere_test.rb:86:in `teardown'
 
-27 tests, 135 assertions, 0 failures, 54 errors, 0 skips
+27 tests, 141 assertions, 1 failures, 53 errors, 0 skips
