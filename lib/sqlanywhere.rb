@@ -21,8 +21,17 @@ class SQLAnywhere
     :val8,
     :uval8,
   ]
+
+  DataDirection = enum [
+    :invalid, 0,
+    :input,
+    :output,
+    :input_output,
+  ]
+
 end
 
 require File.dirname(__FILE__) + '/sql_anywhere_interface.rb'
 require File.dirname(__FILE__) + '/api.rb'
 require File.dirname(__FILE__) + '/data_value.rb'
+require File.dirname(__FILE__) + '/bind_param.rb'

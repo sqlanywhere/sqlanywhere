@@ -74,4 +74,12 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-rollback-met.html
   attach_function :sqlany_rollback, [:pointer], :int
+
+  def sqlany_describe_bind_param(statement, index)
+    bind_parameter = SQLAnywhere::BindParam.new
+    result = sqlany_describe_bind_param_(statement, index, bind_parameter)
+    [result, bind_parameter]
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-describe-bind-param-met.html
+  attach_function :sqlany_describe_bind_param_, :sqlany_describe_bind_param, [:pointer, :uint32, :pointer], :int
 end
