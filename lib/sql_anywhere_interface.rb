@@ -1,12 +1,6 @@
 require 'ffi'
 
-class SQLAnywhere::SQLAnywhereInterface < FFI::Struct
-  # 
-  # The structure has lots of members, are they all required?
-  layout(
-    :dll_handle, :pointer,
-    :initialized, :int,
-  )
+class SQLAnywhere::SQLAnywhereInterface
 
   extend FFI::Library
   ffi_lib 'dbcapi'
