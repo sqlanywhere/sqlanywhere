@@ -40,4 +40,23 @@ class SQLAnywhere::SQLAnywhereInterface
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-get-column-met.html
   attach_function :sqlany_get_column_, :sqlany_get_column, [:pointer, :uint32, :pointer], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-free-stmt-met.html
+  attach_function :sqlany_free_stmt, [:pointer], :void
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-execute-immediate-met.html
+  attach_function :sqlany_execute_immediate, [:pointer, :string], :int
+
+  def sqlany_disconnect(connection)
+    sqlany_disconnect_(connection)
+    return nil
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-disconnect-met.html
+  attach_function :sqlany_disconnect_, :sqlany_disconnect, [:pointer], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-free-connection-met.html
+  attach_function :sqlany_free_connection, [:pointer], :void
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-fini-met.html
+  attach_function :sqlany_fini, [], :void
 end
