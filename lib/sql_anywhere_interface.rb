@@ -31,4 +31,10 @@ class SQLAnywhere::SQLAnywhereInterface < FFI::Struct
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-error-met.html
   attach_function :sqlany_error_, :sqlany_error, [:pointer, :pointer, :size_t], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-execute-direct-met.html
+  attach_function :sqlany_execute_direct, [:pointer, :string], :pointer
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-fetch-next-met.html
+  attach_function :sqlany_fetch_next, [:pointer], :int
 end
