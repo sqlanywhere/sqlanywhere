@@ -31,4 +31,13 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-fetch-next-met.html
   attach_function :sqlany_fetch_next, [:pointer], :int
+
+  def sqlany_get_column(statement, column_number)
+    buffer = SQLAnywhere::DataValue.new
+    result = sqlany_get_column_(statement, column_number, buffer)
+    return [0, nil] if result == 0
+    [result, buffer.value]
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-get-column-met.html
+  attach_function :sqlany_get_column_, :sqlany_get_column, [:pointer, :uint32, :pointer], :int
 end
