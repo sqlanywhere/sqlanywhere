@@ -1,6 +1,12 @@
 require 'ffi'
 
-class SQLAnywhere
+class SQLAnywhere < FFI::Struct
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sqlanywhereinterface-str.html
+  # The structure has lots of members, are they all required?
+  layout(
+    :dll_handle, :pointer,
+    :initialized, :int,
+  )
 end
 
 
