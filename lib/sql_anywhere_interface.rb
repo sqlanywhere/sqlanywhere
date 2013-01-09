@@ -17,7 +17,18 @@ class SQLAnywhere::SQLAnywhereInterface < FFI::Struct
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-init-met.html
   attach_function :sqlany_init_, :sqlany_init, [:string, :uint, :pointer], :int
 
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-new-connection-met.html
   attach_function :sqlany_new_connection, [], :pointer
 
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-connect-met.html
+  attach_function :sqlany_connect, [:pointer, :string], :int
 
+  def sqlany_error(connection)
+    size = 255
+    buffer = FFI::MemoryPointer.new(:char, size, false)
+    code = sqlany_error_ connection, buffer, size
+    return code, buffer.read_string
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-error-met.html
+  attach_function :sqlany_error_, :sqlany_error, [:pointer, :pointer, :size_t], :int
 end
