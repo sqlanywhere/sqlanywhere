@@ -68,4 +68,7 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-commit-met.html
   attach_function :sqlany_commit, [:pointer], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-execute-met.html
+  attach_function :sqlany_execute, [:pointer], :int
 end
