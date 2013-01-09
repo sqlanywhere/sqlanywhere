@@ -1,0 +1,279 @@
+Run options: 
+
+# Running tests:
+
+EEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+Finished tests in 0.587000s, 45.9966 tests/s, 137.9898 assertions/s.
+
+  1) Failure:
+test_bounds_on_types(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0xab2ebf3>>>.
+
+  2) Error:
+test_bounds_on_types(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xab2ebf3>
+    sqlanywhere_test.rb:86:in `teardown'
+
+  3) Failure:
+test_column_info(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x1f8ae191>>>.
+
+  4) Error:
+test_column_info(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1f8ae191>
+    sqlanywhere_test.rb:86:in `teardown'
+
+  5) Failure:
+test_commit(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x42c30c3c>>>.
+
+  6) Error:
+test_commit(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x42c30c3c>
+    sqlanywhere_test.rb:86:in `teardown'
+
+  7) Failure:
+test_errors(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x14e3c50c>>>.
+
+  8) Error:
+test_errors(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x14e3c50c>
+    sqlanywhere_test.rb:86:in `teardown'
+
+  9) Failure:
+test_execute_immediate(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x28d2e4ce>>>.
+
+ 10) Error:
+test_execute_immediate(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x28d2e4ce>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 11) Failure:
+test_insert_binary(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x3a991adc>>>.
+
+ 12) Error:
+test_insert_binary(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3a991adc>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 13) Failure:
+test_insert_bounded_string(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x695e7ea6>>>.
+
+ 14) Error:
+test_insert_bounded_string(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x695e7ea6>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 15) Failure:
+test_insert_date(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x6678f515>>>.
+
+ 16) Error:
+test_insert_date(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6678f515>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 17) Failure:
+test_insert_datetime(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0xa29dec>>>.
+
+ 18) Error:
+test_insert_datetime(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xa29dec>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 19) Failure:
+test_insert_decimal(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x30214cd6>>>.
+
+ 20) Error:
+test_insert_decimal(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x30214cd6>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 21) Failure:
+test_insert_double(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x7d31f3a0>>>.
+
+ 22) Error:
+test_insert_double(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x7d31f3a0>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 23) Failure:
+test_insert_float(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x35001fd2>>>.
+
+ 24) Error:
+test_insert_float(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x35001fd2>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 25) Failure:
+test_insert_int16(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0xd56fc13>>>.
+
+ 26) Error:
+test_insert_int16(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xd56fc13>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 27) Failure:
+test_insert_int32(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x3e8fe949>>>.
+
+ 28) Error:
+test_insert_int32(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3e8fe949>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 29) Failure:
+test_insert_int64(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0xb2e8013>>>.
+
+ 30) Error:
+test_insert_int64(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0xb2e8013>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 31) Failure:
+test_insert_int8(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x6e7f3fbd>>>.
+
+ 32) Error:
+test_insert_int8(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6e7f3fbd>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 33) Failure:
+test_insert_numeric(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x6c490226>>>.
+
+ 34) Error:
+test_insert_numeric(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x6c490226>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 35) Failure:
+test_insert_real(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x1b038ebf>>>.
+
+ 36) Error:
+test_insert_real(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x1b038ebf>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 37) Failure:
+test_insert_smalldate(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x8dec287>>>.
+
+ 38) Error:
+test_insert_smalldate(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x8dec287>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 39) Failure:
+test_insert_timestamp(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x64ba64c8>>>.
+
+ 40) Error:
+test_insert_timestamp(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x64ba64c8>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 41) Failure:
+test_insert_uint16(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x74ca239f>>>.
+
+ 42) Error:
+test_insert_uint16(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x74ca239f>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 43) Failure:
+test_insert_uint32(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x3e2f3733>>>.
+
+ 44) Error:
+test_insert_uint32(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x3e2f3733>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 45) Failure:
+test_insert_uint64(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x338db31b>>>.
+
+ 46) Error:
+test_insert_uint64(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x338db31b>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 47) Failure:
+test_insert_uint8(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x36b4366b>>>.
+
+ 48) Error:
+test_insert_uint8(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x36b4366b>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 49) Failure:
+test_insert_unbounded_string(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x219bbb34>>>.
+
+ 50) Error:
+test_insert_unbounded_string(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x219bbb34>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 51) Failure:
+test_prepared_stmt(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x2287c52c>>>.
+
+ 52) Error:
+test_prepared_stmt(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x2287c52c>
+    sqlanywhere_test.rb:86:in `teardown'
+
+ 53) Failure:
+test_rollback(SQLAnywhere_Test) [sqlanywhere_test.rb:76]:
+Exception raised:
+<#<NoMethodError: undefined method `sqlany_init' for #<SQLAnywhere::SQLAnywhereInterface:0x250f2529>>>.
+
+ 54) Error:
+test_rollback(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_execute_immediate' for #<SQLAnywhere::SQLAnywhereInterface:0x250f2529>
+    sqlanywhere_test.rb:86:in `teardown'
+
+27 tests, 81 assertions, 27 failures, 27 errors, 0 skips
