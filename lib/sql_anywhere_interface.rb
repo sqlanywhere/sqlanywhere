@@ -71,4 +71,7 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-execute-met.html
   attach_function :sqlany_execute, [:pointer], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-rollback-met.html
+  attach_function :sqlany_rollback, [:pointer], :int
 end
