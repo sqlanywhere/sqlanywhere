@@ -4,165 +4,165 @@ Run options:
 
 .E.E.EEEEEEEEEEEEEEEEEEEEE.
 
-Finished tests in 1.328000s, 20.3313 tests/s, 387.0482 assertions/s.
+Finished tests in 3.079000s, 8.7691 tests/s, 173.4329 assertions/s.
 
   1) Error:
 test_column_info(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_get_column_info' for #<SQLAnywhere::SQLAnywhereInterface:0x59e1cd7f>
+NoMethodError: undefined method `sqlany_get_column_info' for #<SQLAnywhere::SQLAnywhereInterface:0x4fc201f6>
     sqlanywhere_test.rb:367:in `assert_column_info'
     sqlanywhere_test.rb:140:in `test_column_info'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   2) Error:
 test_errors(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_sqlstate' for #<SQLAnywhere::SQLAnywhereInterface:0x75f369e6>
+NoMethodError: undefined method `sqlany_sqlstate' for #<SQLAnywhere::SQLAnywhereInterface:0x22c5157>
     sqlanywhere_test.rb:108:in `test_errors'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   3) Error:
 test_insert_binary(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x25eca408>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x650cc20b>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:243:in `test_insert_binary'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   4) Error:
 test_insert_bounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x749d4921>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x7775e278>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:255:in `test_insert_bounded_string'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   5) Error:
 test_insert_date(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0xb500f60>
-    sqlanywhere_test.rb:343:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x625de173>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:305:in `test_insert_date'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   6) Error:
 test_insert_datetime(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x36ceb0be>
-    sqlanywhere_test.rb:343:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x4c700677>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:309:in `test_insert_datetime'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   7) Error:
 test_insert_decimal(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x7edeaa13>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x67028d55>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:251:in `test_insert_decimal'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   8) Error:
 test_insert_double(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x4eb895d5>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x10070863>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:321:in `test_insert_double'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
   9) Error:
 test_insert_float(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x820231a>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x63630762>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:325:in `test_insert_float'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  10) Error:
 test_insert_int16(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x36b9c6cb>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x7f0e1e9d>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:283:in `test_insert_int16'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  11) Error:
 test_insert_int32(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0xd2f3c0>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x472ecdbd>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:273:in `test_insert_int32'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  12) Error:
 test_insert_int64(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x5fba69a7>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x660b3ca8>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:263:in `test_insert_int64'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  13) Error:
 test_insert_int8(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x289ed129>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x5e2e5b83>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:294:in `test_insert_int8'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  14) Error:
 test_insert_numeric(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x664540a2>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x6a535a0a>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:247:in `test_insert_numeric'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  15) Error:
 test_insert_real(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x6d3666fb>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x43f916>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:329:in `test_insert_real'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  16) Error:
 test_insert_smalldate(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x574ec926>
-    sqlanywhere_test.rb:343:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x2f4b04ac>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:313:in `test_insert_smalldate'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  17) Error:
 test_insert_timestamp(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x43f916>
-    sqlanywhere_test.rb:343:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x21d3b6e9>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:317:in `test_insert_timestamp'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  18) Error:
 test_insert_uint16(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x33e64800>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x2578eb0d>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:289:in `test_insert_uint16'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  19) Error:
 test_insert_uint32(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x3eed6de6>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x7de20e08>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:278:in `test_insert_uint32'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  20) Error:
 test_insert_uint64(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x4ef59130>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x43bf730>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:268:in `test_insert_uint64'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  21) Error:
 test_insert_uint8(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x70adcc49>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x176bd487>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:300:in `test_insert_uint8'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  22) Error:
 test_insert_unbounded_string(SQLAnywhere_Test):
-NoMethodError: undefined method `set_value' for #<SQLAnywhere::BindParam:0x528d8c58>
-    sqlanywhere_test.rb:345:in `assert_insert'
+NoMethodError: undefined method `sqlany_bind_param' for #<SQLAnywhere::SQLAnywhereInterface:0x169856b8>
+    sqlanywhere_test.rb:347:in `assert_insert'
     sqlanywhere_test.rb:259:in `test_insert_unbounded_string'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
  23) Error:
 test_prepared_stmt(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_num_params' for #<SQLAnywhere::SQLAnywhereInterface:0x4076fc9>
+NoMethodError: undefined method `sqlany_num_params' for #<SQLAnywhere::SQLAnywhereInterface:0x49d82f27>
     sqlanywhere_test.rb:221:in `test_prepared_stmt'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
-27 tests, 514 assertions, 0 failures, 23 errors, 0 skips
+27 tests, 534 assertions, 0 failures, 23 errors, 0 skips

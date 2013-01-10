@@ -31,6 +31,7 @@ class SQLAnywhere
 
 end
 
+require File.dirname(__FILE__) + '/libc.rb'
 require File.dirname(__FILE__) + '/sql_anywhere_interface.rb'
 require File.dirname(__FILE__) + '/api.rb'
 require File.dirname(__FILE__) + '/data_value.rb'

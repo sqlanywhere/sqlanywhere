@@ -10,8 +10,9 @@ class SQLAnywhere::DataValue < FFI::Struct
     :is_null, :pointer,
     )
 
+
   def is_null?
-    self[:is_null].get_int(0) == 1
+    self[:is_null] && self[:is_null].get_int(0) == 1
   end
 
   def length
