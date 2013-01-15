@@ -1,14 +1,15 @@
 require 'ffi'
 
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-value-str.html
 class SQLAnywhere::DataValue < FFI::Struct
 
   layout(
-    :buffer, :pointer,
+    :buffer, :pointer, # deliberately not a string
     :buffer_size, :size_t,
+    :is_null, :pointer,
     :length, :pointer,
     :type, SQLAnywhere::DataType,
-    :is_null, :pointer,
-    )
+  )
 
 
   def is_null?

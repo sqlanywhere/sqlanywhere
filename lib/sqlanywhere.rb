@@ -69,6 +69,9 @@ require_relative 'bind_param_info.rb'
 require_relative 'column_info.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-info-str.html
 require_relative 'data_info.rb'
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-value-str.html
+require_relative 'data_value.rb'
+
 
 require File.dirname(__FILE__) + '/libc.rb'
 require File.dirname(__FILE__) + '/sql_anywhere_interface.rb'
