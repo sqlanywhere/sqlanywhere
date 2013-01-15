@@ -59,6 +59,15 @@ class SQLAnywhere
 
 end
 
+# typedefs
+require_relative 'bool.rb'
+
+# structures
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-bind-param-info-str.html
+require_relative 'bind_param_info.rb'
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-column-info-str.html
+require_relative 'column_info.rb'
+
 require File.dirname(__FILE__) + '/libc.rb'
 require File.dirname(__FILE__) + '/sql_anywhere_interface.rb'
 require File.dirname(__FILE__) + '/api.rb'
