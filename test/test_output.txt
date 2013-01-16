@@ -4,12 +4,12 @@ Run options:
 
 .E..
 
-Finished tests in 7.395000s, 0.5409 tests/s, 10.0068 assertions/s.
+Finished tests in 7.976000s, 0.5015 tests/s, 9.4032 assertions/s.
 
   1) Error:
 test_errors(SQLAnywhere_Test):
-NoMethodError: undefined method `sqlany_sqlstate' for #<SQLAnywhere::SQLAnywhereInterface:0x3707420a>
-    test/sqlanywhere_test.rb:108:in `test_errors'
+NoMethodError: undefined method `sqlany_clear_error' for #<SQLAnywhere::SQLAnywhereInterface:0x23819b12>
+    test/sqlanywhere_test.rb:109:in `test_errors'
     org/jruby/RubyBasicObject.java:1659:in `__send__'
 
-4 tests, 74 assertions, 0 failures, 1 errors, 0 skips
+4 tests, 75 assertions, 0 failures, 1 errors, 0 skips

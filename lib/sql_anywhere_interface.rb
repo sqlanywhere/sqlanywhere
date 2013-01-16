@@ -95,4 +95,13 @@ class SQLAnywhere::SQLAnywhereInterface
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-get-column-info-met.html
   attach_function :sqlany_get_column_info_, :sqlany_get_column_info, [:pointer, :uint, :pointer], :int
+
+  def sqlany_sqlstate(connection)
+    size = 255
+    buffer = FFI::MemoryPointer.new(:char, size, false)
+    used = sqlany_sqlstate_(connection, buffer, size)
+    buffer.read_string(used)
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-sqlstate-met.html
+  attach_function :sqlany_sqlstate_, :sqlany_sqlstate, [:pointer, :pointer, :size_t], :size_t
 end
