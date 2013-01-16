@@ -1,6 +1,6 @@
 require 'ffi'
 
-# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-value-str.html
+# 
 class SQLAnywhere::DataValue < FFI::Struct
 
   layout(
@@ -11,12 +11,17 @@ class SQLAnywhere::DataValue < FFI::Struct
     :is_null, :pointer,
   )
 
+  def inspect
+    "<#{self.class} value: #{self.value}, buffer_size: #{self[:buffer_size]}, is_null: #{self.is_null?}, length: #{self.length}, type: #{self[:type]}, buffer: #{self[:buffer]}, length_pointer: #{self[:length]}>"
+  end
+
 
   def is_null?
     self[:is_null] && self[:is_null].get_int(0) == 1
   end
 
   def length
+    return nil if self[:length] == nil
     self[:length].read_uint
   end
 

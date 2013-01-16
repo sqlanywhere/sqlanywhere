@@ -16,19 +16,29 @@ class SQLAnywhere::BindParam < FFI::Struct
     self[:direction]
   end
 
+  def inspect
+    "<#{self.class} direction: #{self[:direction]}, name: #{self[:name]}, value: #{self[:value].inspect}>"
+  end
+
   def set_value(value)
 
-    self[:value][:is_null] = SQLAnywhere::LibC.malloc(FFI::Type::INT.size)
+    self[:value][:is_null] = SQLAnywhere::LibC.malloc(SQLAnywhere::Bool.size)
     self[:value][:is_null].write_int(0)
 
     if self[:direction] == :input
 
       case value
       when String
-        self[:value][:length] = SQLAnywhere::LibC.malloc(FFI::Type::INT.size)
-        length = value.bytesize + 1
+        self[:value][:length] = SQLAnywhere::LibC.malloc(FFI::Type::ULONG.size)
+        length = value.bytesize
         self[:value][:length].write_int(length)
-        self[:value][:buffer] = SQLAnywhere::LibC.malloc(length)
+        self[:value][:buffer] = SQLAnywhere::LibC.malloc(length + 1)
+        self[:value][:buffer_size] = length + 1
+
+        ## Don't use put_string as that includes the terminating null
+        # value.each_byte.each_with_index do |byte, index|
+        #  self[:value][:buffer].put_uchar(index, byte)
+        # end
         self[:value][:buffer].put_string(0, value)
         self[:value][:type] = :string
 

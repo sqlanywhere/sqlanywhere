@@ -162,6 +162,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_nil @api.sqlany_free_stmt(rs)
   end
 
+
   def test_bounds_on_types
     is_iq = is_iq_table?("types")
 	rs = exec_direct_with_test("SELECT TOP 2 * FROM \"types\" ORDER BY \"id\"")    
@@ -345,6 +346,9 @@ class SQLAnywhere_Test < Test::Unit::TestCase
       assert_nil param.set_value(value);
     end
     @api.sqlany_bind_param(stmt, 0, param)
+    puts "\n#{param.inspect}"
+
+    #return if String === value or Date === value or DateTime === value
     assert_succeeded @api.sqlany_execute(stmt)
     assert_nil @api.sqlany_free_stmt(stmt)
     
