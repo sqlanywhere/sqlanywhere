@@ -397,7 +397,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_succeeded res
     assert_not_nil val unless expected_value.nil?
     assert_equal expected_value, val
-    assert_instance_of cl, val unless RUBY_PLATFORM == 'java' and cl == Bignum and Fixnum === val
+    assert_instance_of cl, val unless RUBY_PLATFORM =~ /java|64/ and cl == Bignum and Fixnum === val
   end
 
   def setup_transaction

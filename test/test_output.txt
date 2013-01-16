@@ -2,20 +2,8 @@ Run options:
 
 # Running tests:
 
-F............F.......F.....
+...........................
 
-Finished tests in 0.596859s, 45.2368 tests/s, 1275.0078 assertions/s.
+Finished tests in 0.478634s, 56.4105 tests/s, 1907.5115 assertions/s.
 
-  1) Failure:
-test_bounds_on_types(SQLAnywhere_Test) [test/sqlanywhere_test.rb:177]:
-Expected 2147483647 to be an instance of Bignum, not Fixnum.
-
-  2) Failure:
-test_insert_int32(SQLAnywhere_Test) [test/sqlanywhere_test.rb:274]:
-Expected 2147483647 to be an instance of Bignum, not Fixnum.
-
-  3) Failure:
-test_insert_uint32(SQLAnywhere_Test) [test/sqlanywhere_test.rb:279]:
-Expected 4294967295 to be an instance of Bignum, not Fixnum.
-
-27 tests, 761 assertions, 3 failures, 0 errors, 0 skips
+27 tests, 913 assertions, 0 failures, 0 errors, 0 skips
