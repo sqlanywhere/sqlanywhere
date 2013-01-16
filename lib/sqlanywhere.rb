@@ -98,6 +98,8 @@ require_relative 'bool.rb'
 
 # structures
 #
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-value-str.html
+require_relative 'data_value.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-bind-param-str.html
 require_relative 'bind_param.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-bind-param-info-str.html
@@ -106,8 +108,6 @@ require_relative 'bind_param_info.rb'
 require_relative 'column_info.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-info-str.html
 require_relative 'data_info.rb'
-# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-data-value-str.html
-require_relative 'data_value.rb'
 
 
 require_relative 'libc.rb'
