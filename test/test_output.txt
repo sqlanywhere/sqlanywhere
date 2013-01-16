@@ -2,24 +2,14 @@ Run options:
 
 # Running tests:
 
-EEEE.#
-# A fatal error has been detected by the Java Runtime Environment:
-#
-#  SIGSEGV (0xb) at pc=0x00007f88499aec20, pid=15088, tid=140223971079936
-#
-# JRE version: 7.0_09
-# Java VM: OpenJDK 64-Bit Server VM (23.2-b09 mixed mode linux-amd64 compressed oops)
-# Problematic frame:
-# C  [libdbcapi.so+0x4c20]  sqlany_new_connection_ex+0x990
-#
-# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
-#
-# An error report file with more information is saved as:
-# /home/IN4SYS/chris.couzens/Documents/sqlanywhere/test/hs_err_pid15088.log
-#
-# If you would like to submit a bug report, please include
-# instructions on how to reproduce the bug and visit:
-#   http://icedtea.classpath.org/bugzilla
-# The crash happened outside the Java Virtual Machine in native code.
-# See problematic frame for where to report the bug.
-#
+.E..
+
+Finished tests in 7.395000s, 0.5409 tests/s, 10.0068 assertions/s.
+
+  1) Error:
+test_errors(SQLAnywhere_Test):
+NoMethodError: undefined method `sqlany_sqlstate' for #<SQLAnywhere::SQLAnywhereInterface:0x3707420a>
+    test/sqlanywhere_test.rb:108:in `test_errors'
+    org/jruby/RubyBasicObject.java:1659:in `__send__'
+
+4 tests, 74 assertions, 0 failures, 1 errors, 0 skips

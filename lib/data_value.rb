@@ -33,19 +33,19 @@ class SQLAnywhere::DataValue < FFI::Struct
       self[:buffer].read_double
     when :val64 # 64 bit integer
       self[:buffer].read_long
-    when :uval64 # 64 bit unsigned integer
+    when :unsigned_val64 # 64 bit unsigned integer
       self[:buffer].read_ulong
     when :val32
       self[:buffer].read_int
-    when :uval32
+    when :unsigned_val32
       self[:buffer].read_uint
     when :val16
       self[:buffer].read_short
-    when :uval16
+    when :unsigned_val16
       self[:buffer].read_ushort
     when :val8
       self[:buffer].read_char
-    when :uval8
+    when :unsigned_val8
       self[:buffer].read_uchar
     else
       raise "Type not yet implemented #{self[:type]}"
