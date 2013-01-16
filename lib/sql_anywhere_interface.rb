@@ -104,4 +104,7 @@ class SQLAnywhere::SQLAnywhereInterface
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-sqlstate-met.html
   attach_function :sqlany_sqlstate_, :sqlany_sqlstate, [:pointer, :pointer, :size_t], :size_t
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-clear-error-met.html
+  attach_function :sqlany_clear_error, [:pointer], :void
 end
