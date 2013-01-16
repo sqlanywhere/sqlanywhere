@@ -4,13 +4,15 @@ require 'ffi'
 class SQLAnywhere::ColumnInfo < FFI::Struct
 
   layout(
-    :max_size, :size_t,
+    # The name of the column (null-terminated).
+    # The string can be referenced as long as the result set object is not freed.
     :name, :string,
+    :type, SQLAnywhere::DataType,
     :native_type, SQLAnywhere::NativeType,
-    :nullable, SQLAnywhere::Bool,
     :precision, :ushort,
     :scale, :ushort,
-    :type, SQLAnywhere::DataType,
+    :max_size, :size_t,
+    :nullable, SQLAnywhere::Bool,
     )
 
 end

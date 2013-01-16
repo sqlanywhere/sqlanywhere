@@ -4,9 +4,9 @@ require 'ffi'
 class SQLAnywhere::DataInfo < FFI::Struct
 
   layout(
-    :data_size, :size_t,
-    :is_null, SQLAnywhere::Bool,
     :type, SQLAnywhere::DataType,
+    :is_null, SQLAnywhere::Bool,
+    :data_size, :size_t,
     )
 
 end

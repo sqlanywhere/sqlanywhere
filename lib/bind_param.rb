@@ -4,8 +4,8 @@ class SQLAnywhere::BindParam < FFI::Struct
 
   layout(
     :direction, SQLAnywhere::DataDirection,
-    :name, :string,
     :value, SQLAnywhere::DataValue,
+    :name, :string,
     )
 
   def set_value(value)

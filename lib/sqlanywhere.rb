@@ -5,6 +5,8 @@ class SQLAnywhere
   API_VERSION_1 = 1
   API_VERSION_2 = 2
 
+  ERROR_SIZE = 256
+
   extend FFI::Library
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-a-sqlany-data-direction-enu.html
@@ -32,28 +34,60 @@ class SQLAnywhere
   ]
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-a-sqlany-native-type-enu.html
+  # http://dcx.sybase.com/index.html#1201/en/dbprogramming/esqlvar.html
   NativeType = enum [
+    # No data type.
     :no_type,
+    # Null-terminated character string that is a valid date. 
     :date,
+    # Null-terminated character string that is a valid time. 
     :time,
+    # Null-terminated character string that is a valid timestamp.
     :timestamp,
+    # Varying length character string, in the CHAR character set, with a two-byte length field.
+    # The maximum length is 32765 bytes. When sending data, you must set the length field.
+    # When fetching data, the database server sets the length field.
+    # The data is not null-terminated or blank-padded.
     :var_char,
+    # Fixed-length blank-padded character string, in the CHAR character set.
+    # The maximum length, specified in bytes, is 32767.
+    # The data is not null-terminated. 
     :fix_char,
+    # Long varying length character string, in the CHAR character set.
     :long_var_char,
+    # Null-terminated character string, in the CHAR character set.
+    # The string is blank-padded if the database is initialized with blank-padded strings.
     :string,
+    # 8-byte floating-point number. 
     :double,
+    # 4-byte floating-point number.
     :float,
+    # Packed decimal number (proprietary format). 
     :decimal,
+    # 32-bit signed integer.
     :int,
+    # 16-bit signed integer.
     :small_int,
+    # Varying length binary data with a two-byte length field.
+    # The maximum length is 32765 bytes.
+    # When supplying information to the database server, you must set the length field.
+    # When fetching information from the database server, the server sets the length field. 
     :binary,
+    # Long binary data.
     :long_binary,
+    # 8-bit signed integer.
     :tiny_int,
+    # 64-bit signed integer.
     :big_int,
+    # 32-bit unsigned integer.
     :unsigned_int,
+    # 16-bit unsigned integer.
     :unsigned_small_int,
+    # 64-bit unsigned integer.
     :unsigned_big_int,
+    # 8-bit signed integer.
     :bit,
+    # Long varying length character string, in the NCHAR character set.
     :long_n_varchar,
   ]
 
@@ -63,6 +97,9 @@ end
 require_relative 'bool.rb'
 
 # structures
+#
+# http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-bind-param-str.html
+require_relative 'bind_param.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-bind-param-info-str.html
 require_relative 'bind_param_info.rb'
 # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-a-sqlany-column-info-str.html
@@ -73,8 +110,6 @@ require_relative 'data_info.rb'
 require_relative 'data_value.rb'
 
 
-require File.dirname(__FILE__) + '/libc.rb'
-require File.dirname(__FILE__) + '/sql_anywhere_interface.rb'
-require File.dirname(__FILE__) + '/api.rb'
-require File.dirname(__FILE__) + '/data_value.rb'
-require File.dirname(__FILE__) + '/bind_param.rb'
+require_relative 'libc.rb'
+require_relative 'sql_anywhere_interface.rb'
+require_relative 'api.rb'

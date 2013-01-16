@@ -4,9 +4,9 @@ require 'ffi'
 class SQLAnywhere::BindParamInfo < FFI::Struct
 
   layout(
+    :name, :string,
     :direction, SQLAnywhere::DataDirection,
     :input_value, SQLAnywhere::DataValue,
-    :name, :string,
-    :output_value, SQLAnywhere::OutputValue,
+    :output_value, SQLAnywhere::DataValue,
   )
 end
