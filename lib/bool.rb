@@ -6,4 +6,8 @@ class SQLAnywhere::Bool < FFI::Struct
     :value, :int32,
   )
 
+  def read
+    self[:value]
+  end
+
 end

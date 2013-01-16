@@ -90,8 +90,8 @@ class SQLAnywhere::SQLAnywhereInterface
 
     info = SQLAnywhere::ColumnInfo.new
     
-    result = sqlany_get_column_(statement, column_number, info)
-    [result, column_number, info.name, info.type, info.precision, info.scale, info.max_size, info.nullable]
+    result = sqlany_get_column_info_(statement, column_number, info)
+    [result, column_number, info[:name], info[:type], info[:native_type], info[:precision], info[:scale], info[:max_size], info[:nullable].read]
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-get-column-info-met.html
   attach_function :sqlany_get_column_info_, :sqlany_get_column_info, [:pointer, :uint, :pointer], :int

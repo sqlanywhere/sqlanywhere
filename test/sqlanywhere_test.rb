@@ -367,7 +367,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     res, col_num, col_name, col_type, col_native_type, col_precision, col_scale, col_size, col_nullable = @api.sqlany_get_column_info(rs, pos);
     assert_succeeded res
     assert_equal expected_col_name, col_name 
-    assert_equal expected_col_type, col_type
+    assert_equal SQLAnywhere::DataType[expected_col_type], col_type
     assert_equal expected_col_size, col_size
   end
 
