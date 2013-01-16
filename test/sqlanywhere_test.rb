@@ -40,7 +40,7 @@ begin
   #end
   
   
-  require File.dirname(__FILE__) + '/../lib/sqlanywhere.rb'
+  require 'sqlanywhere.rb'
 
 end
 

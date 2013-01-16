@@ -82,4 +82,17 @@ class SQLAnywhere::SQLAnywhereInterface
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-describe-bind-param-met.html
   attach_function :sqlany_describe_bind_param_, :sqlany_describe_bind_param, [:pointer, :uint32, :pointer], :int
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-bind-param-met.html
+  attach_function :sqlany_bind_param, [:pointer, :uint, :pointer], :int
+
+  def sqlany_get_column_info(statement, column_number)
+
+    info = SQLAnywhere::ColumnInfo.new
+    
+    result = sqlany_get_column_(statement, column_number, info)
+    [result, column_number, info.name, info.type, info.precision, info.scale, info.max_size, info.nullable]
+  end
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-get-column-info-met.html
+  attach_function :sqlany_get_column_info_, :sqlany_get_column_info, [:pointer, :uint, :pointer], :int
 end
