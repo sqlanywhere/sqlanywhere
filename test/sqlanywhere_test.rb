@@ -222,7 +222,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     res, param = @api.sqlany_describe_bind_param(stmt, 0)
     assert_not_equal 0, res
     assert_equal "?", param.get_name()
-    assert_equal Direction::DD_INPUT, param.get_direction()
+    assert_equal :input, param.get_direction()
 
     assert_nil param.set_value(0);
     @api.sqlany_bind_param(stmt, 0, param)

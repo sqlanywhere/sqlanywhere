@@ -107,4 +107,7 @@ class SQLAnywhere::SQLAnywhereInterface
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-clear-error-met.html
   attach_function :sqlany_clear_error, [:pointer], :void
+
+  # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-num-params-met.html
+  attach_function :sqlany_num_params, [:pointer], :int
 end

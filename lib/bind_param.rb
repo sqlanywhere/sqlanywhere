@@ -8,6 +8,14 @@ class SQLAnywhere::BindParam < FFI::Struct
     :name, :string,
     )
 
+  def get_name
+    self[:name]
+  end
+
+  def get_direction
+    self[:direction]
+  end
+
   def set_value(value)
 
     self[:value][:is_null] = SQLAnywhere::LibC.malloc(FFI::Type::INT.size)
