@@ -33,7 +33,7 @@ The official code repository is located on GitHub. The repository can be cloned 
 
 5. Run the unit tests:
 
-    ruby -I ../lib sqlanywhere_test.rb
+    ruby sqlanywhere_test.rb
 
 <b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information,
 review the online documentation here [http://dcx.sybase.com/index.html#1200/en/dbadmin/da-envvar.html].

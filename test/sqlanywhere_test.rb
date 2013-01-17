@@ -35,7 +35,7 @@ require 'date'
 
 begin  
   
-  require 'sqlanywhere.rb'
+  require_relative '../lib/sqlanywhere.rb'
 
 end
 
