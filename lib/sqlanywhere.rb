@@ -110,6 +110,5 @@ require_relative 'column_info.rb'
 require_relative 'data_info.rb'
 
 
-require_relative 'libc.rb'
 require_relative 'sql_anywhere_interface.rb'
 require_relative 'api.rb'

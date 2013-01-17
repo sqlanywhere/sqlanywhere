@@ -22,31 +22,26 @@ class SQLAnywhere::BindParam < FFI::Struct
 
   def set_value(value)
 
-    self[:value][:is_null] = SQLAnywhere::LibC.malloc(SQLAnywhere::Bool.size)
-    self[:value][:is_null].write_int(0)
+    self[:value][:is_null] = FFI::MemoryPointer.new(SQLAnywhere::Bool, 1, true)
 
     if self[:direction] == :input
 
       case value
       when String
-        self[:value][:length] = SQLAnywhere::LibC.malloc(FFI::Type::ULONG.size)
+        self[:value][:length] = FFI::MemoryPointer.new(:size_t, 1, false)
         length = value.bytesize
         self[:value][:length].write_ulong(length)
-        self[:value][:buffer] = SQLAnywhere::LibC.malloc(length + 1)
+        self[:value][:buffer] = FFI::MemoryPointer.new(:char, length + 1, false)
 
-        ## Don't use put_string as that includes the terminating null
-        # value.each_byte.each_with_index do |byte, index|
-        #  self[:value][:buffer].put_uchar(index, byte)
-        # end
         self[:value][:buffer].put_string(0, value)
         self[:value][:type] = :string
 
       when Fixnum
         if FFI::Type::POINTER.size == 4 # 32 bit
-          self[:value][:buffer] = SQLAnywhere::LibC.malloc(FFI::Type::INT.size)
+          self[:value][:buffer] = FFI::MemoryPointer.new(:int, 1, false)
           self[:value][:type] = :val32
         else # 64 bit
-          self[:value][:buffer] = SQLAnywhere::LibC.malloc(FFI::Type::LONG.size)
+          self[:value][:buffer] = FFI::MemoryPointer.new(:long, 1, false)
           self[:value][:type] = :val64
         end
         byte_array = [value].pack(self[:value][:type] == :val32 ? 'l' : 'q')
@@ -57,7 +52,7 @@ class SQLAnywhere::BindParam < FFI::Struct
         end
 
       when Bignum
-        self[:value][:buffer] = SQLAnywhere::LibC.malloc(FFI::Type::LONG_LONG.size)
+        self[:value][:buffer] = FFI::MemoryPointer.new(:long_long, 1, false)
         self[:value][:type] = :val64
         byte_array = [value].pack('l_')
         offset = 0
@@ -66,19 +61,19 @@ class SQLAnywhere::BindParam < FFI::Struct
           offset += 1
         end
       when Float
-        self[:value][:buffer] = SQLAnywhere::LibC.malloc(FFI::Type::DOUBLE.size)
+        self[:value][:buffer] = FFI::MemoryPointer.new(:double, 1, false)
         self[:value][:buffer].write_double(value)
         self[:value][:type] = :double
       when nil
         self[:value][:is_null].write_int(1)
-        self[:value][:buffer] = SQLAnywhere::LibC.malloc(FFI::Type::INT.size)
+        self[:value][:buffer] = FFI::MemoryPointer.new(:int, 1, false)
         self[:value][:type] = :val32
       else
         raise "Cannot convert type (#{value.class}). Must be STRING, FIXNUM, BIGNUM, FLOAT, or NIL"
       end
 
     else
-      self[:value][:buffer] = SQLAnywhere::LibC.malloc(
+      self[:value][:buffer] = FFI::MemoryPointer.new(:char,
         case self[:value][:type]
         when :string
           self[:value][:buffer_size]

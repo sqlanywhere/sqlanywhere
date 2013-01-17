@@ -1,9 +1,0 @@
-Run options: 
-
-# Running tests:
-
-...........................
-
-Finished tests in 0.478634s, 56.4105 tests/s, 1907.5115 assertions/s.
-
-27 tests, 913 assertions, 0 failures, 0 errors, 0 skips
