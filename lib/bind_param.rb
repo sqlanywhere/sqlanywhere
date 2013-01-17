@@ -16,6 +16,10 @@ class SQLAnywhere::BindParam < FFI::Struct
     self[:direction]
   end
 
+  def set_direction d
+    self[:direction] = d
+  end
+
   def inspect
     "<#{self.class} direction: #{self[:direction]}, name: #{self[:name]}, value: #{self[:value].inspect}>"
   end
