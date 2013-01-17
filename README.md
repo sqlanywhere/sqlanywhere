@@ -1,4 +1,4 @@
-=SQL Anywhere Ruby Driver
+=SQL Anywhere Ruby Driver=
 
 This is a native SQL Anywhere driver for Ruby. This library wraps the 
 functionality provided by the SQL Anywhere DBCAPI library. This driver
@@ -13,57 +13,7 @@ The official code repository is located on GitHub. The repository can be cloned 
 
    git clone git://github.com/sqlanywhere/sqlanywhere.git
 
-==Build Instructions
-
-===Requirements
-* C Compiler
-* Ruby
-* RubyGem Package manager
-
-
-===All Platforms
-
-To build the library (.so), use:
-
-   rake
-
-To build and install the gem, use:
-
-   rake gem
-   rake install
-
-The other rake tasks are 
-
-   rake clean   -> Cleans up all temp files (ex *.~)
-   rake clobber -> Cleans up all built files (ex *.gem, *.o, *.so)
-
-===Additional Install Notes for Windows
-
-The popular One-Click Ruby Installer for Windows (RubyInstaller) is built using 
-Microsoft Visual C++ 6.0. Since problems can arise by combining binaries from
-different compilers, we advise you use this compiler.
-
-If you want to use a more recent version of the MS C++ compiler, you will need to make a few changes:
-
-1. Open the file: <RUBY DIR>\lib\ruby\1.8\i386-mswin32\config.h, and comment out the first three lines so they look like:
-
-    //#if _MSC_VER != 1200
-    //#error MSC version unmatch
-    //#endif
-  
-   This removes the check for C++ Version 6.0
-
-2. Open <tt>rakefile</tt> and set:
-
-      APPLY_MANIFEST = true
-
-   This will add the manifest to the compiled binaries.
-
-By default, rake will attempt to use Microsoft <tt>nmake</tt> when building under Windows. To use another make program, set:
-
-     USE_NMAKE_ON_WIN = FALSE
-
-==Running Unit Tests
+==Running Unit Tests==
 
 1. Change to the the <tt>test</tt> directory
 
@@ -83,12 +33,12 @@ By default, rake will attempt to use Microsoft <tt>nmake</tt> when building unde
 
 5. Run the unit tests:
 
-    ruby sqlanywhere_test.rb
+    ruby -I ../lib sqlanywhere_test.rb
 
 <b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information,
 review the online documentation here [http://dcx.sybase.com/index.html#1200/en/dbadmin/da-envvar.html].
 
-==Sample
+==Sample==
 
 This script makes a connection, prints <tt>Successful Ruby Connection</tt> to the SQL
 Anywhere console, then disconnects.
