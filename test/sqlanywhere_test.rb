@@ -33,12 +33,7 @@
 require 'test/unit'
 require 'date'
 
-begin
-  #require 'rubygems'
-  #unless defined? SQLAnywhere
-  #  require 'sqlanywhere'
-  #end
-  
+begin  
   
   require 'sqlanywhere.rb'
 
