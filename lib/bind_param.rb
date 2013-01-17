@@ -54,11 +54,9 @@ class SQLAnywhere::BindParam < FFI::Struct
       when Bignum
         self[:value][:buffer] = FFI::MemoryPointer.new(:long_long, 1, false)
         self[:value][:type] = :val64
-        byte_array = [value].pack('l_')
-        offset = 0
-        byte_array.each_byte do |b|
+        byte_array = [value].pack('Q')
+        byte_array.each_byte.each_with_index do |b, offset|
           self[:value][:buffer].put_char(offset, b)
-          offset += 1
         end
       when Float
         self[:value][:buffer] = FFI::MemoryPointer.new(:double, 1, false)

@@ -30,16 +30,14 @@ class SQLAnywhere::DataValue < FFI::Struct
 
     case self[:type]
     #when :invalid_type
-    when :binary
-      self[:buffer].get_string(0, length)
-    when :string
+    when :binary, :string
       self[:buffer].get_string(0, length)
     when :double
       self[:buffer].read_double
     when :val64 # 64 bit integer
-      self[:buffer].read_long
+      self[:buffer].read_long_long
     when :unsigned_val64 # 64 bit unsigned integer
-      self[:buffer].read_ulong
+      self[:buffer].read_ulong_long
     when :val32
       self[:buffer].read_int
     when :unsigned_val32
