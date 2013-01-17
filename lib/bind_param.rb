@@ -31,9 +31,8 @@ class SQLAnywhere::BindParam < FFI::Struct
       when String
         self[:value][:length] = SQLAnywhere::LibC.malloc(FFI::Type::ULONG.size)
         length = value.bytesize
-        self[:value][:length].write_int(length)
+        self[:value][:length].write_ulong(length)
         self[:value][:buffer] = SQLAnywhere::LibC.malloc(length + 1)
-        self[:value][:buffer_size] = length + 1
 
         ## Don't use put_string as that includes the terminating null
         # value.each_byte.each_with_index do |byte, index|
