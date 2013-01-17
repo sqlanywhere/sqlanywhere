@@ -1,5 +1,5 @@
-=SQL Anywhere Ruby Driver=
-
+SQL Anywhere Ruby Driver
+------------------------
 This is a native SQL Anywhere driver for Ruby. This library wraps the 
 functionality provided by the SQL Anywhere DBCAPI library. This driver
 is intended to be a base-level library to be used by interface libraries
@@ -38,47 +38,65 @@ The official code repository is located on GitHub. The repository can be cloned 
 <b>If the tests fail to run, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information,
 review the online documentation here [http://dcx.sybase.com/index.html#1200/en/dbadmin/da-envvar.html].
 
-==Sample==
+Sample
+------
 
 This script makes a connection, prints <tt>Successful Ruby Connection</tt> to the SQL
 Anywhere console, then disconnects.
   
    # load the SQLAnywhere gem
+
    begin
+
      require 'rubygems'
+
      gem 'sqlanywhere'
+
      unless defined? SQLAnywhere
+
        require 'sqlanywhere'
-     end    
+
+     end
+
    end
 
    # create an interface
+
    api = SQLAnywhere::SQLAnywhereInterface.new()
 
    # initialize the interface (loads the DLL/SO)
+
    SQLAnywhere::API.sqlany_initialize_interface( api )
 
    # initialize our api object
+
    api.sqlany_init()
 
    # create a connection
+
    conn = api.sqlany_new_connection()
 
    # establish a connection
+
    api.sqlany_connect(conn, "uid=dba;pwd=sql")
 
    # execute a query without a result set
+
    api.sqlany_execute_immediate(conn, "MESSAGE 'Successful Ruby Connection'")
 
    # disconnect from the database
+
    api.sqlany_disconnect(conn)
 
    # free the connection resources
+
    api.sqlany_free_connection(conn)
 
    # free resources the api object uses
+
    api.sqlany_fini()
 
    # close the interface
+   
    SQLAnywhere::API.sqlany_finalize_interface( api )
 
