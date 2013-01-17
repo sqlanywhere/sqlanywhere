@@ -28,11 +28,10 @@ class SQLAnywhere::BindParam < FFI::Struct
 
       case value
       when String
-        self[:value][:length] = FFI::MemoryPointer.new(:ulong, 1, false)
+        self[:value][:length] = FFI::MemoryPointer.new(:size_t, 1, false)
         length = value.bytesize
-        self[:value][:length].write_int(length)
+        self[:value][:length].write_long(length)
         self[:value][:buffer] = FFI::MemoryPointer.new(:char, length + 1, false)
-        self[:value][:buffer_size] = length + 1
 
         ## Don't use put_string as that includes the terminating null
         # value.each_byte.each_with_index do |byte, index|
