@@ -17,11 +17,12 @@ class SQLAnywhere::DataValue < FFI::Struct
 
 
   def is_null?
-    self[:is_null] && self[:is_null].get_int(0) == 1
+    return nil if self[:is_null].null?
+    self[:is_null].read_uint == 1
   end
 
   def length
-    return nil if self[:length] == nil
+    return nil if self[:length].null?
     self[:length].read_uint
   end
 
