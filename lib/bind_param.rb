@@ -39,22 +39,13 @@ class SQLAnywhere::BindParam < FFI::Struct
 
         self[:value][:buffer].put_string(0, value)
         self[:value][:type] = :string
-
       when Fixnum
-        if FFI::Type::POINTER.size == 4 # 32 bit
-          self[:value][:buffer] = FFI::MemoryPointer.new(:int, 1, false)
-          self[:value][:type] = :val32
-        else # 64 bit
-          self[:value][:buffer] = FFI::MemoryPointer.new(:long, 1, false)
-          self[:value][:type] = :val64
-        end
-        byte_array = [value].pack(self[:value][:type] == :val32 ? 'l' : 'q')
-        offset = 0
-        byte_array.each_byte do |b|
+        self[:value][:buffer] = FFI::MemoryPointer.new(:long, 1, false)
+        self[:value][:type] = :val64
+        byte_array = [value].pack('q')
+        byte_array.each_byte.each_with_index do |b, offset|
           self[:value][:buffer].put_char(offset, b)
-          offset += 1
         end
-
       when Bignum
         self[:value][:buffer] = FFI::MemoryPointer.new(:long_long, 1, false)
         self[:value][:type] = :val64
