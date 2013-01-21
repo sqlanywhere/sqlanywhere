@@ -9,6 +9,6 @@ Gem::Specification.new do |s|
   s.executables = []
   s.test_files = Dir["test/tst*.rb"]
   s.has_rdoc = false
-  s.add_dependency 'ffi', '> 1.3.1'
+  s.add_dependency 'ffi', '>= 1.3.1'
 end
 
