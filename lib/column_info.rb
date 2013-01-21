@@ -11,7 +11,7 @@ class SQLAnywhere::ColumnInfo < FFI::Struct
     :native_type, SQLAnywhere::NativeType,
     :precision, :ushort,
     :scale, :ushort,
-    :max_size, :size_t,
+    :max_size, SQLAnywhere::SIZE_T,
     :nullable, SQLAnywhere::Bool,
     )
 

@@ -24,7 +24,7 @@ class SQLAnywhere::SQLAnywhereInterface
     return code, buffer.read_string
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-error-met.html
-  attach_function :sqlany_error_, :sqlany_error, [:pointer, :pointer, :size_t], :int
+  attach_function :sqlany_error_, :sqlany_error, [:pointer, :pointer, SQLAnywhere::SIZE_T], :int
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-execute-direct-met.html
   attach_function :sqlany_execute_direct, [:pointer, :string], :pointer
@@ -103,7 +103,7 @@ class SQLAnywhere::SQLAnywhereInterface
     buffer.read_string(used)
   end
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-sqlstate-met.html
-  attach_function :sqlany_sqlstate_, :sqlany_sqlstate, [:pointer, :pointer, :size_t], :size_t
+  attach_function :sqlany_sqlstate_, :sqlany_sqlstate, [:pointer, :pointer, SQLAnywhere::SIZE_T], SQLAnywhere::SIZE_T
 
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-sqlany-clear-error-met.html
   attach_function :sqlany_clear_error, [:pointer], :void

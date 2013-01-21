@@ -9,6 +9,18 @@ class SQLAnywhere
 
   extend FFI::Library
 
+  if FFI.type_size(:size_t) == 4
+    SIZE_T = :uint
+    def self.write_size_t(location, value)
+      location.write_uint(value)
+    end
+  else
+    SIZE_T = :ulong_long
+    def self.write_size_t(location, value)
+      location.write_ulong_long(value)
+    end
+  end
+
   # http://dcx.sybase.com/1200/en/dbprogramming/programming-sacpp-sacapi-h-fil-a-sqlany-data-direction-enu.html
   DataDirection = enum [
     :invalid, 0,

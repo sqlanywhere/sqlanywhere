@@ -6,7 +6,7 @@ class SQLAnywhere::DataInfo < FFI::Struct
   layout(
     :type, SQLAnywhere::DataType,
     :is_null, SQLAnywhere::Bool,
-    :data_size, :size_t,
+    :data_size, SQLAnywhere::SIZE_T,
     )
 
 end

@@ -5,7 +5,7 @@ class SQLAnywhere::DataValue < FFI::Struct
 
   layout(
     :buffer, :pointer, # deliberately not a string
-    :buffer_size, :size_t,
+    :buffer_size, SQLAnywhere::SIZE_T,
     :length, :pointer,
     :type, SQLAnywhere::DataType,
     :is_null, :pointer,

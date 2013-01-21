@@ -32,9 +32,9 @@ class SQLAnywhere::BindParam < FFI::Struct
 
       case value
       when String
-        self[:value][:length] = FFI::MemoryPointer.new(:size_t, 1, false)
+        self[:value][:length] = FFI::MemoryPointer.new(SQLAnywhere::SIZE_T, 1, false)
         length = value.bytesize
-        self[:value][:length].write_ulong(length)
+        SQLAnywhere.write_size_t(self[:value][:length], length)
         self[:value][:buffer] = FFI::MemoryPointer.new(:char, length + 1, false)
 
         self[:value][:buffer].put_string(0, value)
