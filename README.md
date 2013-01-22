@@ -11,9 +11,10 @@ This driver is licensed under the Apache License, Version 2.
 
 The official code repository is located on GitHub. The repository can be cloned with:
 
-   git clone git://github.com/sqlanywhere/sqlanywhere.git
+   git clone git://github.com/in4systems/sqlanywhere.git
 
-==Running Unit Tests==
+Running Unit Tests
+==================
 
 1. Change to the the <tt>test</tt> directory
 
@@ -43,7 +44,7 @@ Sample
 
 This script makes a connection, prints <tt>Successful Ruby Connection</tt> to the SQL
 Anywhere console, then disconnects.
-  
+<code>
    # load the SQLAnywhere gem
 
    begin
@@ -99,4 +100,4 @@ Anywhere console, then disconnects.
    # close the interface
    
    SQLAnywhere::API.sqlany_finalize_interface( api )
-
+</code>
