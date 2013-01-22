@@ -1,6 +1,4 @@
-gem 'ffi', '>=1.3.1'
 require 'ffi'
-
 
 class SQLAnywhere
   API_VERSION_1 = 1
