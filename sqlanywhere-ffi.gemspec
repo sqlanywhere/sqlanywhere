@@ -15,5 +15,11 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.add_dependency 'ffi', '>= 1.3.1'
   s.homepage = 'https://github.com/in4systems/sqlanywhere'
+  s.requirements = <<-REQUIREMENTS
+    DBCAPI should be installed.
+    http://www.sybase.co.uk/detail?id=1087327
+    It should also be in your library path.
+    On Linux, this can be done by running: source /opt/sqlanywhere12/bin64/sa_config.sh
+  REQUIREMENTS
 end
 
