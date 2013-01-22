@@ -18,7 +18,7 @@ class SQLAnywhere::SQLAnywhereInterface
   attach_function :sqlany_connect, [:pointer, :string], :int
 
   def sqlany_error(connection)
-    size = 255
+    size = SQLAnywhere::ERROR_SIZE
     buffer = FFI::MemoryPointer.new(:char, size, false)
     code = sqlany_error_ connection, buffer, size
     return code, buffer.read_string
