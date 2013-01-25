@@ -33,11 +33,10 @@
 require 'test/unit'
 require 'date'
 
-begin
-  require 'rubygems'
-  unless defined? SQLAnywhere
-    require 'sqlanywhere'
-  end    
+begin  
+  
+  require_relative '../lib/sqlanywhere.rb'
+
 end
 
 class Types
@@ -218,7 +217,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     res, param = @api.sqlany_describe_bind_param(stmt, 0)
     assert_not_equal 0, res
     assert_equal "?", param.get_name()
-    assert_equal Direction::DD_INPUT, param.get_direction()
+    assert_equal :input, param.get_direction()
 
     assert_nil param.set_value(0);
     @api.sqlany_bind_param(stmt, 0, param)
@@ -363,7 +362,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     res, col_num, col_name, col_type, col_native_type, col_precision, col_scale, col_size, col_nullable = @api.sqlany_get_column_info(rs, pos);
     assert_succeeded res
     assert_equal expected_col_name, col_name 
-    assert_equal expected_col_type, col_type
+    assert_equal SQLAnywhere::DataType[expected_col_type], col_type
     assert_equal expected_col_size, col_size
   end
 
@@ -389,7 +388,7 @@ class SQLAnywhere_Test < Test::Unit::TestCase
     assert_succeeded res
     assert_not_nil val unless expected_value.nil?
     assert_equal expected_value, val
-    assert_instance_of cl, val
+    assert_instance_of cl, val unless RUBY_PLATFORM =~ /java|64/ and cl == Bignum and Fixnum === val
   end
 
   def setup_transaction
